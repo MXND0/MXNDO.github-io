@@ -2,7 +2,7 @@
   "name": "Neon Creator AI",
   "short_name": "NeonAI",
   "description": "Generador de contenido con IA por perfiles",
-  "start_url": "/neon-creator-ai.html",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#05030d",
   "background_color": "#05030d",
