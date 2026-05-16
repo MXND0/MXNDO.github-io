@@ -110,11 +110,14 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 
 /* TOAST */
 .toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;max-width:92vw;text-align:center;border:1px solid var(--border);background:rgba(8,12,30,.95);backdrop-filter:blur(12px);pointer-events:none}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;visibility:hidden;opacity:0;transition:all .2s}
+.modal-overlay.show{visibility:visible;opacity:1}
+.modal{background:var(--bg2);border:1px solid var(--c1);border-radius:20px;max-width:300px;width:80%;padding:20px;text-align:center;box-shadow:0 0 20px rgba(60,247,255,.3)}
+.modal p{margin-bottom:16px;color:var(--text)}
+.modal button{margin:0 8px}
 
-/* LOADING */
-.loading-overlay{position:fixed;inset:0;background:rgba(5,3,13,.75);display:grid;place-items:center;z-index:200;display:none}
-.loading-overlay.show{display:grid}
-.spinner{width:52px;height:52px;border:3px solid rgba(60,247,255,.2);border-top-color:var(--c1);border-radius:50%;animation:spin .7s linear infinite}
+/* LOADING MINI */
+.loader-mini{display:inline-block;width:20px;height:20px;border:2px solid rgba(60,247,255,.2);border-top-color:var(--c1);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
@@ -224,7 +227,13 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 
   <!-- TAB: Generar -->
   <div class="ws-tab active" id="wt-gen">
-    <div class="fg"><label>Tema o idea central *</label><input id="wTopic" placeholder="Ej: Mejorar sensibilidad con IA"/></div>
+    <div class="fg"><label>Tema o idea central *</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
+        <input id="wTopic" placeholder="Ej: Mejorar sensibilidad con IA" style="flex:1; min-width:120px">
+        <button class="btn btn-soft" id="suggestLocalBtn" title="Sugerencia local">🎲 Local</button>
+        <button class="btn btn-soft" id="suggestIABtn" title="Sugerencia con IA">✨ IA sugerir</button>
+      </div>
+    </div>
     <div class="fg"><label>Tono</label>
       <select id="wTone">
         <option>Energético y motivador</option>
@@ -320,8 +329,16 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
   <div class="bn" data-screen="s-settings"><div class="icon">⚙️</div>Ajustes</div>
 </div>
 
-<!-- LOADING -->
+<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loader"><div class="spinner"></div></div>
+<!-- Modal de advertencia IA -->
+<div id="iaWarningModal" class="modal-overlay">
+  <div class="modal">
+    <p><strong>✨ Sugerencia con IA</strong><br>Usará tu API key de Gemini y consumirá tokens. Ten en cuenta los límites gratuitos. ¿Deseas continuar?</p>
+    <div><button class="btn btn-primary" id="iaConfirmBtn">Continuar</button><button class="btn btn-soft" id="iaCancelBtn">Cancelar</button></div>
+    <div style="margin-top:12px"><label><input type="checkbox" id="iaDontAskAgain"> No volver a mostrar</label></div>
+  </div>
+</div>
 
 <script>
 const KEY='neon_ai_v5';
@@ -329,10 +346,55 @@ const THEMES=['neon','ice','violet','amber','cyberRed','green','pink','dark','li
 const PLATFORMS=['TikTok','YouTube','Reels','Shorts','Twitter/X','Facebook'];
 const TYPES=['Guión completo','Ganchos (hooks)','Títulos optimizados','Ideas de contenido','Descripción y hashtags','CTA'];
 
+// LISTA LOCAL DE TEMAS (más de 60 ideas variadas)
+const LOCAL_TOPICS = [
+  "5 errores que cometen los principiantes y cómo evitarlos",
+  "Herramientas gratuitas que todo creador debería conocer",
+  "Cómo mejorar tu engagement en 7 días",
+  "El poder de los shorts: trucos para viralizar",
+  "Detrás de cámaras: mi proceso de creación",
+  "Tendencias 2025 que no puedes ignorar",
+  "Cómo contar historias que enganchen",
+  "Respondiendo preguntas de mi comunidad",
+  "Colaboraciones: cómo contactar con marcas",
+  "Cómo superar el bloqueo creativo",
+  "Mi setup minimalista para crear contenido",
+  "Análisis de una campaña viral (y por qué funcionó)",
+  "3 formatos que generan más guardados",
+  "Cómo programar publicaciones sin estrés",
+  "El arte del gancho: primeras 3 segundos",
+  "Cómo medir el ROI de tu contenido",
+  "Guía para principiantes en [tu nicho]",
+  "Errores de iluminación que arruinan tus videos",
+  "Cómo elegir la música perfecta para reels",
+  "Estrategia de hashtags que sí funciona",
+  "Cómo convertir seguidores en clientes",
+  "Entrevista a un experto del sector",
+  "Review honesta de [producto/servicio]",
+  "El antes y después de aplicar estas técnicas",
+  "Cómo mantener la constancia sin quemarte",
+  "Análisis de métricas que importan",
+  "Cómo aprovechar las noticias de tu nicho",
+  "Series: episodio 1 - Introducción",
+  "Reto de 30 días para crecer en [red]",
+  "Cómo usar la IA para generar ideas",
+  "Los peores consejos que he recibido",
+  "Cómo crear una comunidad leal",
+  "Formatos interactivos: encuestas, preguntas",
+  "Cómo trabajar con microinfluencers",
+  "El futuro de [tu nicho] en 2030",
+  "Cómo vender sin ser comercial",
+  "Errores de edición que debes evitar",
+  "Cómo grabar con solo un móvil",
+  "Storytelling para marcas personales",
+  "Cómo conseguir tus primeros 1000 seguidores"
+];
+
 let app={key:'',model:'gemini-2.5-flash',theme:'neon',profiles:[],history:[],memories:[]};
 let currentProfileId=null;
 let lastDraftRaw='';
-let lastGenParams=null; // Guardar parámetros para regenerar
+let lastGenParams=null;
+let navStack=[]; // para gestión de historial
 
 function save(){localStorage.setItem(KEY,JSON.stringify(app))}
 function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)}}catch(e){}}
@@ -348,15 +410,47 @@ function syncThemeSelect(){const sel=document.getElementById('themeSel');if(sel)
 function cycleTheme(){const i=THEMES.indexOf(app.theme||'neon');app.theme=THEMES[(i+1)%THEMES.length];applyTheme(app.theme);syncThemeSelect();save();toast('Tema: '+app.theme);}
 function toggleMode(){app.theme=(app.theme==='light'?'dark':'light');applyTheme(app.theme);syncThemeSelect();save();toast('Modo: '+app.theme);}
 
-function showScreen(id,pushNav){
+// Navegación con historial
+function showScreen(id, addToHistory=true){
+  const currentActive=document.querySelector('.screen.active')?.id;
+  if(currentActive===id) return;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if(pushNav){
-    document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));
-  }
+  // Actualizar bottom nav
+  document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));
   window.scrollTo(0,0);
+  if(addToHistory){
+    // Añadir al stack y al historial del navegador
+    if(navStack[navStack.length-1] !== id){
+      navStack.push(id);
+      history.pushState({screen:id}, '', '');
+    }
+  }
 }
-function goBack(){showScreen('s-profiles',true)}
+
+// Reemplazar el stack al volver atrás
+function goBack(){
+  if(navStack.length>1){
+    navStack.pop();
+    const prev=navStack[navStack.length-1];
+    showScreen(prev, false);
+  }else{
+    // Si solo queda una, salir de la app (comportamiento normal)
+    history.back();
+  }
+}
+
+// Manejador del evento popstate (botón atrás del sistema)
+window.addEventListener('popstate', (event) => {
+  if(navStack.length>1){
+    navStack.pop();
+    const prev=navStack[navStack.length-1];
+    showScreen(prev, false);
+  }else{
+    // Si no hay más pantallas, permitir salir
+    // No hacer nada, el navegador saldrá
+  }
+});
 
 function mkChips(id,items,defaults){
   const box=document.getElementById(id);
@@ -434,7 +528,7 @@ function saveProfile(){
     save();
   }
   renderProfiles();
-  showScreen('s-profiles',true);
+  showScreen('s-profiles');
 }
 function delProfile(id){
   if(!confirm(`¿Borrar el perfil "${app.profiles.find(p=>p.id===id)?.name}" y todo su historial?`))return;
@@ -475,20 +569,90 @@ function switchWsTab(tabId){
   if(tabId==='wt-memory')renderWsMemory();
 }
 
-// Nueva función regenerar
+// ---------- SUGERENCIA LOCAL ----------
+function suggestLocalTopic(){
+  const randomIndex = Math.floor(Math.random() * LOCAL_TOPICS.length);
+  document.getElementById('wTopic').value = LOCAL_TOPICS[randomIndex];
+  toast('Tema local sugerido');
+}
+
+// ---------- SUGERENCIA IA ----------
+let iaWarningAccepted = false;
+function showIaWarning(callback){
+  if(iaWarningAccepted) {
+    callback();
+    return;
+  }
+  const modal = document.getElementById('iaWarningModal');
+  modal.classList.add('show');
+  const confirmBtn = document.getElementById('iaConfirmBtn');
+  const cancelBtn = document.getElementById('iaCancelBtn');
+  const dontAsk = document.getElementById('iaDontAskAgain');
+  const handlerConfirm = () => {
+    if(dontAsk.checked) iaWarningAccepted = true;
+    modal.classList.remove('show');
+    callback();
+    clean();
+  };
+  const handlerCancel = () => {
+    modal.classList.remove('show');
+    clean();
+  };
+  const clean = () => {
+    confirmBtn.removeEventListener('click', handlerConfirm);
+    cancelBtn.removeEventListener('click', handlerCancel);
+  };
+  confirmBtn.addEventListener('click', handlerConfirm);
+  cancelBtn.addEventListener('click', handlerCancel);
+}
+async function suggestIATopic(){
+  const p = cp();
+  if(!p) return toast('Primero abre un perfil');
+  if(!app.key) return toast('Configura tu API Key en Ajustes');
+  showIaWarning(async () => {
+    toast('Generando sugerencia con IA...');
+    const prompt = `Eres un estratega de contenido. Basándote en el siguiente perfil, genera 3 ideas de tema originales y atractivas para una publicación en redes sociales. Devuelve solo una frase por línea, sin números ni guiones. No añadas texto extra.
+    
+Perfil:
+- Nicho: ${p.niche || 'General'}
+- Audiencia: ${p.audience || 'General'}
+- Tono base: ${p.tone || 'Natural'}
+- Descripción: ${p.description || ''}
+
+Ideas:`;
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.9, maxOutputTokens:150}})
+      });
+      if(!res.ok) throw new Error('Error al obtener sugerencia');
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if(!text) throw new Error('Sin respuesta');
+      const lines = text.split('\n').filter(l=>l.trim().length>0);
+      if(lines.length===0) throw new Error('Respuesta vacía');
+      const randomIdea = lines[Math.floor(Math.random() * lines.length)];
+      document.getElementById('wTopic').value = randomIdea.trim();
+      toast('Sugerencia IA aplicada');
+    } catch(e){
+      toast('Error IA: '+e.message);
+    }
+  });
+}
+
+// Función regenerar
 function regenerate() {
   if (!lastGenParams) {
     toast('No hay generación previa para regenerar');
     return;
   }
-  // Restaurar parámetros en el formulario
   document.getElementById('wTopic').value = lastGenParams.topic;
   document.getElementById('wTone').value = lastGenParams.tone;
   document.getElementById('wContext').value = lastGenParams.context || '';
   document.getElementById('wMemMode').value = lastGenParams.memMode || 'last3';
   mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
   mkChips('wTypes', TYPES, lastGenParams.types);
-  // Llamar a generar de nuevo
   generate();
 }
 
@@ -504,7 +668,6 @@ async function generate(){
   const context=document.getElementById('wContext').value.trim();
   const memMode=document.getElementById('wMemMode').value;
   
-  // Guardar parámetros actuales para regenerar
   lastGenParams = { topic, tone, platforms, types, context, memMode };
   
   const mems=app.memories.filter(m=>m.profileId===p.id);
@@ -556,7 +719,6 @@ Al final agrega: POTENCIAL: [número del 1 al 100]`;
     const draft={id:uid(),profileId:p.id,profileName:p.name,date:new Date().toISOString(),topic,tone,platforms,types,context,blocks,raw:txt};
     app.history.push(draft);
     app.memories.push({id:uid(),profileId:p.id,title:'Generado: '+topic,content:blocks.map(b=>b.type+': '+b.content.slice(0,200)).join(' | '),date:new Date().toISOString()});
-    // Limitar memorias a 30 por perfil
     const perProfileMemories=app.memories.filter(m=>m.profileId===p.id);
     if(perProfileMemories.length>30){
       const toRemove=perProfileMemories.slice(0,perProfileMemories.length-30);
@@ -662,32 +824,37 @@ function init(){
   const lastId=sessionStorage.getItem('lastProfileId');
   if(lastId && app.profiles.some(p=>p.id===lastId)){
     openWorkspace(lastId);
-    document.querySelectorAll('.bn').forEach(b=>b.classList.remove('active'));
-    document.querySelector('[data-screen="s-profiles"]').classList.add('active');
+    // Ajustar stack y bottom nav
+    navStack = ['s-home', 's-profiles', 's-workspace']; // simplificado
+  }else{
+    navStack = ['s-home'];
+    history.replaceState({screen:'s-home'}, '');
   }
+  // Bottom nav
   document.querySelectorAll('.bn').forEach(b=>b.onclick=()=>{
-    document.querySelectorAll('.bn').forEach(n=>n.classList.remove('active'));
-    b.classList.add('active');
-    showScreen(b.dataset.screen,false);
-    if(b.dataset.screen==='s-profiles')renderProfiles();
-    if(b.dataset.screen==='s-home')renderHomeRecent();
-    if(b.dataset.screen==='s-settings')renderSettings();
+    const screenId = b.dataset.screen;
+    showScreen(screenId);
+    if(screenId==='s-profiles')renderProfiles();
+    if(screenId==='s-home')renderHomeRecent();
+    if(screenId==='s-settings')renderSettings();
   });
   document.getElementById('modeBtn').onclick=toggleMode;
   document.getElementById('cycleBtn').onclick=cycleTheme;
-  document.getElementById('homeGoProfilesBtn').onclick=()=>{document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen==='s-profiles'));showScreen('s-profiles');renderProfiles()};
+  document.getElementById('homeGoProfilesBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('homeTourBtn').onclick=()=>alert('TOUR:\n1. Ir a Perfiles → Crear un perfil.\n2. Abrir el perfil tocando "Abrir".\n3. En la pestaña ⚡ Generar: escribe un tema y pulsa Generar.\n4. En 🗂 Historial: ver, usar o editar lo generado.\n5. En 🧠 Memoria: notas del canal.\n6. Cambiar tema: botón ✦ arriba o en Ajustes.');
   document.getElementById('newProfileBtn').onclick=openNewProfile;
   document.getElementById('saveProfileBtn').onclick=saveProfile;
-  document.getElementById('cancelProfileBtn').onclick=goBack;
-  document.getElementById('backFromFormBtn').onclick=goBack;
-  document.getElementById('backFromWsBtn').onclick=()=>{document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen==='s-profiles'));showScreen('s-profiles');renderProfiles()};
+  document.getElementById('cancelProfileBtn').onclick=()=>showScreen('s-profiles');
+  document.getElementById('backFromFormBtn').onclick=()=>showScreen('s-profiles');
+  document.getElementById('backFromWsBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('wsEditProfileBtn').onclick=()=>{if(currentProfileId)editProfile(currentProfileId)};
   document.querySelectorAll('.ws-tab-btn').forEach(b=>b.onclick=()=>switchWsTab(b.dataset.tab));
   document.getElementById('wGenBtn').onclick=generate;
   document.getElementById('wClearBtn').onclick=()=>{document.getElementById('wTopic').value='';document.getElementById('wContext').value='';mkChips('wPlatforms',PLATFORMS,['TikTok']);mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);document.getElementById('wResult').style.display='none';toast('Limpio')};
   document.getElementById('wCopyBtn').onclick=()=>{if(!lastDraftRaw)return;navigator.clipboard.writeText(lastDraftRaw).then(()=>toast('Copiado al portapapeles')).catch(()=>toast('Error al copiar'))};
   document.getElementById('wRegenerateBtn').onclick=regenerate;
+  document.getElementById('suggestLocalBtn').onclick=suggestLocalTopic;
+  document.getElementById('suggestIABtn').onclick=suggestIATopic;
   document.getElementById('addMemBtn').onclick=()=>{const p=cp();if(!p)return;const title=document.getElementById('memTitle').value.trim();const content=document.getElementById('memContent').value.trim();if(!title||!content)return toast('Escribe título y contenido');app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString()});document.getElementById('memTitle').value='';document.getElementById('memContent').value='';save();renderWsMemory();toast('Memoria guardada')};
   document.getElementById('saveSettingsBtn').onclick=saveSettings;
   document.getElementById('themeSel').onchange=()=>{app.theme=document.getElementById('themeSel').value;applyTheme(app.theme);save()};
