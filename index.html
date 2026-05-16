@@ -254,6 +254,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
         <div class="sec-title" style="margin:0">Resultado</div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-soft" id="wCopyBtn">Copiar</button>
+          <button class="btn btn-soft" id="wRegenerateBtn">🔄 Regenerar</button>
         </div>
       </div>
       <div id="wCards"></div>
@@ -331,6 +332,7 @@ const TYPES=['Guión completo','Ganchos (hooks)','Títulos optimizados','Ideas d
 let app={key:'',model:'gemini-2.5-flash',theme:'neon',profiles:[],history:[],memories:[]};
 let currentProfileId=null;
 let lastDraftRaw='';
+let lastGenParams=null; // Guardar parámetros para regenerar
 
 function save(){localStorage.setItem(KEY,JSON.stringify(app))}
 function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)}}catch(e){}}
@@ -473,6 +475,23 @@ function switchWsTab(tabId){
   if(tabId==='wt-memory')renderWsMemory();
 }
 
+// Nueva función regenerar
+function regenerate() {
+  if (!lastGenParams) {
+    toast('No hay generación previa para regenerar');
+    return;
+  }
+  // Restaurar parámetros en el formulario
+  document.getElementById('wTopic').value = lastGenParams.topic;
+  document.getElementById('wTone').value = lastGenParams.tone;
+  document.getElementById('wContext').value = lastGenParams.context || '';
+  document.getElementById('wMemMode').value = lastGenParams.memMode || 'last3';
+  mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
+  mkChips('wTypes', TYPES, lastGenParams.types);
+  // Llamar a generar de nuevo
+  generate();
+}
+
 async function generate(){
   const p=cp();if(!p)return toast('Sin perfil activo');
   const topic=document.getElementById('wTopic').value.trim();
@@ -484,6 +503,10 @@ async function generate(){
   const tone=document.getElementById('wTone').value;
   const context=document.getElementById('wContext').value.trim();
   const memMode=document.getElementById('wMemMode').value;
+  
+  // Guardar parámetros actuales para regenerar
+  lastGenParams = { topic, tone, platforms, types, context, memMode };
+  
   const mems=app.memories.filter(m=>m.profileId===p.id);
   const memText=memMode==='none'?'':memMode==='last3'?mems.slice(-3).map(m=>`- ${m.title}: ${m.content}`).join('\n'):mems.map(m=>`- ${m.title}: ${m.content}`).join('\n');
   const prompt=`Eres un estratega senior de redes sociales. Responde siempre en español.
@@ -626,10 +649,9 @@ function saveSettings(){
   toast('Ajustes guardados');
 }
 
-// registrar Service Worker
 function registerSW(){
   if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/sw.js').then(reg=>console.log('SW registrado',reg)).catch(err=>console.warn('Error SW',err));
+    navigator.serviceWorker.register('/MXNDO.github-io/sw.js').then(reg=>console.log('SW registrado',reg)).catch(err=>console.warn('Error SW',err));
   }
 }
 
@@ -637,15 +659,12 @@ function init(){
   load();
   applyTheme(app.theme||'neon');
   syncThemeSelect();
-  // Restaurar perfil activo desde sessionStorage
   const lastId=sessionStorage.getItem('lastProfileId');
   if(lastId && app.profiles.some(p=>p.id===lastId)){
     openWorkspace(lastId);
-    // Ajustar bottom nav para que no se quede en "home" visualmente
     document.querySelectorAll('.bn').forEach(b=>b.classList.remove('active'));
     document.querySelector('[data-screen="s-profiles"]').classList.add('active');
   }
-  // Bottom nav
   document.querySelectorAll('.bn').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('.bn').forEach(n=>n.classList.remove('active'));
     b.classList.add('active');
@@ -654,29 +673,24 @@ function init(){
     if(b.dataset.screen==='s-home')renderHomeRecent();
     if(b.dataset.screen==='s-settings')renderSettings();
   });
-  // Topbar
   document.getElementById('modeBtn').onclick=toggleMode;
   document.getElementById('cycleBtn').onclick=cycleTheme;
-  // Home
   document.getElementById('homeGoProfilesBtn').onclick=()=>{document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen==='s-profiles'));showScreen('s-profiles');renderProfiles()};
   document.getElementById('homeTourBtn').onclick=()=>alert('TOUR:\n1. Ir a Perfiles → Crear un perfil.\n2. Abrir el perfil tocando "Abrir".\n3. En la pestaña ⚡ Generar: escribe un tema y pulsa Generar.\n4. En 🗂 Historial: ver, usar o editar lo generado.\n5. En 🧠 Memoria: notas del canal.\n6. Cambiar tema: botón ✦ arriba o en Ajustes.');
-  // Profiles
   document.getElementById('newProfileBtn').onclick=openNewProfile;
   document.getElementById('saveProfileBtn').onclick=saveProfile;
   document.getElementById('cancelProfileBtn').onclick=goBack;
   document.getElementById('backFromFormBtn').onclick=goBack;
-  // Workspace
   document.getElementById('backFromWsBtn').onclick=()=>{document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen==='s-profiles'));showScreen('s-profiles');renderProfiles()};
   document.getElementById('wsEditProfileBtn').onclick=()=>{if(currentProfileId)editProfile(currentProfileId)};
   document.querySelectorAll('.ws-tab-btn').forEach(b=>b.onclick=()=>switchWsTab(b.dataset.tab));
   document.getElementById('wGenBtn').onclick=generate;
   document.getElementById('wClearBtn').onclick=()=>{document.getElementById('wTopic').value='';document.getElementById('wContext').value='';mkChips('wPlatforms',PLATFORMS,['TikTok']);mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);document.getElementById('wResult').style.display='none';toast('Limpio')};
   document.getElementById('wCopyBtn').onclick=()=>{if(!lastDraftRaw)return;navigator.clipboard.writeText(lastDraftRaw).then(()=>toast('Copiado al portapapeles')).catch(()=>toast('Error al copiar'))};
+  document.getElementById('wRegenerateBtn').onclick=regenerate;
   document.getElementById('addMemBtn').onclick=()=>{const p=cp();if(!p)return;const title=document.getElementById('memTitle').value.trim();const content=document.getElementById('memContent').value.trim();if(!title||!content)return toast('Escribe título y contenido');app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString()});document.getElementById('memTitle').value='';document.getElementById('memContent').value='';save();renderWsMemory();toast('Memoria guardada')};
-  // Settings
   document.getElementById('saveSettingsBtn').onclick=saveSettings;
   document.getElementById('themeSel').onchange=()=>{app.theme=document.getElementById('themeSel').value;applyTheme(app.theme);save()};
-  // Init chips
   mkChips('wPlatforms',PLATFORMS,['TikTok']);
   mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
   renderProfiles();
