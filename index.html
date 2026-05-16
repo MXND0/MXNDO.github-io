@@ -21,6 +21,7 @@
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
 button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
+button:disabled{opacity:0.6;cursor:not-allowed;filter:grayscale(0.1)}
 input,textarea,select{font:inherit;color:inherit;background:rgba(15,25,50,.9);border:1px solid rgba(80,140,255,.2);border-radius:10px;padding:10px 12px;outline:none;width:100%;transition:border .15s}
 input:focus,textarea:focus,select:focus{border-color:var(--c1);box-shadow:0 0 0 2px rgba(60,247,255,.1)}
 textarea{resize:vertical;min-height:80px}
@@ -116,8 +117,11 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 .modal p{margin-bottom:16px;color:var(--text)}
 .modal button{margin:0 8px}
 
-/* LOADING MINI */
-.loader-mini{display:inline-block;width:20px;height:20px;border:2px solid rgba(60,247,255,.2);border-top-color:var(--c1);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+/* LOADING OVERLAY */
+.loading-overlay{position:fixed;inset:0;background:rgba(5,3,13,.75);display:grid;place-items:center;z-index:200;display:none}
+.loading-overlay.show{display:grid}
+.spinner{width:52px;height:52px;border:3px solid rgba(60,247,255,.2);border-top-color:var(--c1);border-radius:50%;animation:spin .7s linear infinite}
+.loader-mini{display:inline-block;width:18px;height:18px;border:2px solid rgba(60,247,255,.2);border-top-color:var(--c1);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
@@ -394,7 +398,7 @@ let app={key:'',model:'gemini-2.5-flash',theme:'neon',profiles:[],history:[],mem
 let currentProfileId=null;
 let lastDraftRaw='';
 let lastGenParams=null;
-let navStack=[]; // para gestión de historial
+let navStack=[];
 
 function save(){localStorage.setItem(KEY,JSON.stringify(app))}
 function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)}}catch(e){}}
@@ -416,39 +420,27 @@ function showScreen(id, addToHistory=true){
   if(currentActive===id) return;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  // Actualizar bottom nav
   document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));
   window.scrollTo(0,0);
-  if(addToHistory){
-    // Añadir al stack y al historial del navegador
-    if(navStack[navStack.length-1] !== id){
-      navStack.push(id);
-      history.pushState({screen:id}, '', '');
-    }
+  if(addToHistory && navStack[navStack.length-1] !== id){
+    navStack.push(id);
+    history.pushState({screen:id}, '', '');
   }
 }
-
-// Reemplazar el stack al volver atrás
 function goBack(){
   if(navStack.length>1){
     navStack.pop();
     const prev=navStack[navStack.length-1];
     showScreen(prev, false);
-  }else{
-    // Si solo queda una, salir de la app (comportamiento normal)
+  } else {
     history.back();
   }
 }
-
-// Manejador del evento popstate (botón atrás del sistema)
 window.addEventListener('popstate', (event) => {
   if(navStack.length>1){
     navStack.pop();
     const prev=navStack[navStack.length-1];
     showScreen(prev, false);
-  }else{
-    // Si no hay más pantallas, permitir salir
-    // No hacer nada, el navegador saldrá
   }
 });
 
@@ -576,7 +568,7 @@ function suggestLocalTopic(){
   toast('Tema local sugerido');
 }
 
-// ---------- SUGERENCIA IA ----------
+// ---------- SUGERENCIA IA MEJORADA ----------
 let iaWarningAccepted = false;
 function showIaWarning(callback){
   if(iaWarningAccepted) {
@@ -605,64 +597,72 @@ function showIaWarning(callback){
   confirmBtn.addEventListener('click', handlerConfirm);
   cancelBtn.addEventListener('click', handlerCancel);
 }
+
 async function suggestIATopic(){
   const p = cp();
   if(!p) return toast('Primero abre un perfil');
   if(!app.key) return toast('Configura tu API Key en Ajustes');
+  
   showIaWarning(async () => {
-    toast('Generando sugerencia con IA...');
-    const prompt = `Eres un estratega de contenido. Basándote en el siguiente perfil, genera 3 ideas de tema originales y atractivas para una publicación en redes sociales. Devuelve solo una frase por línea, sin números ni guiones. No añadas texto extra.
-    
+    const btnIa = document.getElementById('suggestIABtn');
+    const originalText = btnIa.innerHTML;
+    btnIa.innerHTML = '<span class="loader-mini"></span> IA...';
+    btnIa.disabled = true;
+    try {
+      const prompt = `Eres un estratega de contenido creativo. Genera 3 ideas de tema para publicaciones en redes sociales, basadas en el siguiente perfil. Cada idea debe ser una frase clara y completa de al menos 6 palabras, que invite a desarrollar contenido. No uses números ni guiones. Ejemplo: "Cómo mejorar la sensibilidad del mouse para ganar más partidas".
+
 Perfil:
 - Nicho: ${p.niche || 'General'}
 - Audiencia: ${p.audience || 'General'}
 - Tono base: ${p.tone || 'Natural'}
 - Descripción: ${p.description || ''}
 
-Ideas:`;
-    try {
+Ahora escribe 3 ideas:`;
+      
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.9, maxOutputTokens:150}})
+        body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.9, maxOutputTokens:200}})
       });
       if(!res.ok) throw new Error('Error al obtener sugerencia');
       const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
       if(!text) throw new Error('Sin respuesta');
-      const lines = text.split('\n').filter(l=>l.trim().length>0);
-      if(lines.length===0) throw new Error('Respuesta vacía');
+      
+      let lines = text.split('\n').filter(l=>l.trim().length>5);
+      if(lines.length===0) lines = [text.trim()];
       const randomIdea = lines[Math.floor(Math.random() * lines.length)];
-      document.getElementById('wTopic').value = randomIdea.trim();
-      toast('Sugerencia IA aplicada');
+      const cleanIdea = randomIdea.replace(/^[\d\-•*]+\.?\s*/, '').trim();
+      if(cleanIdea.length > 5) {
+        document.getElementById('wTopic').value = cleanIdea;
+        toast('Sugerencia IA aplicada');
+      } else {
+        throw new Error('Idea demasiado corta');
+      }
     } catch(e){
       toast('Error IA: '+e.message);
+      suggestLocalTopic(); // fallback
+    } finally {
+      btnIa.innerHTML = originalText;
+      btnIa.disabled = false;
     }
   });
 }
 
-// Función regenerar
-function regenerate() {
-  if (!lastGenParams) {
-    toast('No hay generación previa para regenerar');
-    return;
-  }
-  document.getElementById('wTopic').value = lastGenParams.topic;
-  document.getElementById('wTone').value = lastGenParams.tone;
-  document.getElementById('wContext').value = lastGenParams.context || '';
-  document.getElementById('wMemMode').value = lastGenParams.memMode || 'last3';
-  mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
-  mkChips('wTypes', TYPES, lastGenParams.types);
-  generate();
-}
+// ---------- GENERAR CON LOADER Y CONTROL DE MÚLTIPLES LLAMADAS ----------
+let isGenerating = false;
 
 async function generate(){
-  const p=cp();if(!p)return toast('Sin perfil activo');
+  if(isGenerating) {
+    toast('Ya hay una generación en curso, espera');
+    return;
+  }
+  const p=cp(); if(!p) return toast('Sin perfil activo');
   const topic=document.getElementById('wTopic').value.trim();
-  if(!topic)return toast('Escribe un tema');
-  if(!app.key)return toast('Configura tu API Key en Ajustes');
+  if(!topic) return toast('Escribe un tema');
+  if(!app.key) return toast('Configura tu API Key en Ajustes');
   const types=getChips('wTypes');
-  if(!types.length)return toast('Elige al menos un tipo');
+  if(!types.length) return toast('Elige al menos un tipo');
   const platforms=getChips('wPlatforms');
   const tone=document.getElementById('wTone').value;
   const context=document.getElementById('wContext').value.trim();
@@ -696,23 +696,37 @@ Devuelve cada sección con formato:
 [contenido]
 
 Al final agrega: POTENCIAL: [número del 1 al 100]`;
+  
   loader(true);
+  isGenerating = true;
+  const genBtn = document.getElementById('wGenBtn');
+  genBtn.disabled = true;
+  genBtn.innerHTML = '<span class="loader-mini"></span> Generando...';
+  
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 45000);
+  const timeoutId = setTimeout(() => controller.abort(), 60000);
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:8192}}),signal:controller.signal});
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:8192}}),
+      signal:controller.signal
+    });
     clearTimeout(timeoutId);
     if(!res.ok){
       let errMsg=`HTTP ${res.status}`;
       try{const errData=await res.json();errMsg=errData.error?.message||errMsg;}catch(e){}
+      if(errMsg.includes('quota') || errMsg.includes('Quota')) {
+        errMsg = '⏳ Has excedido el límite gratuito de Gemini. Espera 1 minuto y vuelve a intentar.';
+      }
       throw new Error(errMsg);
     }
     const data=await res.json();
-    if(!data.candidates||data.candidates.length===0)throw new Error('La API no devolvió candidatos');
+    if(!data.candidates||data.candidates.length===0) throw new Error('La API no devolvió candidatos');
     const parts=data.candidates[0].content?.parts;
-    if(!parts||!parts[0]?.text)throw new Error('Respuesta sin texto');
+    if(!parts||!parts[0]?.text) throw new Error('Respuesta sin texto');
     const txt=parts[0].text;
-    if(!txt)throw new Error('Texto vacío');
+    if(!txt) throw new Error('Texto vacío');
     lastDraftRaw=txt;
     const blocks=parseOutput(txt);
     renderResult(blocks);
@@ -725,16 +739,27 @@ Al final agrega: POTENCIAL: [número del 1 al 100]`;
       app.memories=app.memories.filter(m=>!toRemove.includes(m));
     }
     save();
-    toast('Generado y guardado');
+    toast('✅ Generado y guardado');
   }catch(e){
-    if(e.name==='AbortError')toast('Tiempo de espera agotado (45s)');
-    else toast('Error: '+e.message);
-  }finally{loader(false);}
+    if(e.name==='AbortError') toast('⏰ Tiempo de espera agotado (60s)');
+    else toast('❌ Error: '+e.message);
+  }finally{
+    loader(false);
+    isGenerating = false;
+    genBtn.disabled = false;
+    genBtn.innerHTML = '⚡ Generar';
+  }
 }
+
 function parseOutput(txt){
   const parts=txt.split(/===\s*TIPO:/i).filter(Boolean);
-  if(parts.length<2)return[{type:'Resultado',content:txt.trim()}];
-  return parts.map(p=>{const lines=p.trim().split('\n');const type=lines.shift().replace(/===/g,'').trim();const content=lines.join('\n').replace(/POTENCIAL:.*$/im,'').trim();return{type,content}});
+  if(parts.length<2) return [{type:'Resultado',content:txt.trim()}];
+  return parts.map(p=>{
+    const lines=p.trim().split('\n');
+    const type=lines.shift().replace(/===/g,'').trim();
+    const content=lines.join('\n').replace(/POTENCIAL:.*$/im,'').trim();
+    return {type,content};
+  });
 }
 function renderResult(blocks){
   document.getElementById('wCards').innerHTML=blocks.map(b=>`
@@ -817,6 +842,20 @@ function registerSW(){
   }
 }
 
+function regenerate() {
+  if (!lastGenParams) {
+    toast('No hay generación previa para regenerar');
+    return;
+  }
+  document.getElementById('wTopic').value = lastGenParams.topic;
+  document.getElementById('wTone').value = lastGenParams.tone;
+  document.getElementById('wContext').value = lastGenParams.context || '';
+  document.getElementById('wMemMode').value = lastGenParams.memMode || 'last3';
+  mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
+  mkChips('wTypes', TYPES, lastGenParams.types);
+  generate();
+}
+
 function init(){
   load();
   applyTheme(app.theme||'neon');
@@ -824,19 +863,17 @@ function init(){
   const lastId=sessionStorage.getItem('lastProfileId');
   if(lastId && app.profiles.some(p=>p.id===lastId)){
     openWorkspace(lastId);
-    // Ajustar stack y bottom nav
-    navStack = ['s-home', 's-profiles', 's-workspace']; // simplificado
+    navStack = ['s-home', 's-profiles', 's-workspace'];
   }else{
     navStack = ['s-home'];
     history.replaceState({screen:'s-home'}, '');
   }
-  // Bottom nav
   document.querySelectorAll('.bn').forEach(b=>b.onclick=()=>{
     const screenId = b.dataset.screen;
     showScreen(screenId);
-    if(screenId==='s-profiles')renderProfiles();
-    if(screenId==='s-home')renderHomeRecent();
-    if(screenId==='s-settings')renderSettings();
+    if(screenId==='s-profiles') renderProfiles();
+    if(screenId==='s-home') renderHomeRecent();
+    if(screenId==='s-settings') renderSettings();
   });
   document.getElementById('modeBtn').onclick=toggleMode;
   document.getElementById('cycleBtn').onclick=cycleTheme;
@@ -847,17 +884,42 @@ function init(){
   document.getElementById('cancelProfileBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('backFromFormBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('backFromWsBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('wsEditProfileBtn').onclick=()=>{if(currentProfileId)editProfile(currentProfileId)};
+  document.getElementById('wsEditProfileBtn').onclick=()=>{if(currentProfileId) editProfile(currentProfileId)};
   document.querySelectorAll('.ws-tab-btn').forEach(b=>b.onclick=()=>switchWsTab(b.dataset.tab));
   document.getElementById('wGenBtn').onclick=generate;
-  document.getElementById('wClearBtn').onclick=()=>{document.getElementById('wTopic').value='';document.getElementById('wContext').value='';mkChips('wPlatforms',PLATFORMS,['TikTok']);mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);document.getElementById('wResult').style.display='none';toast('Limpio')};
-  document.getElementById('wCopyBtn').onclick=()=>{if(!lastDraftRaw)return;navigator.clipboard.writeText(lastDraftRaw).then(()=>toast('Copiado al portapapeles')).catch(()=>toast('Error al copiar'))};
+  document.getElementById('wClearBtn').onclick=()=>{
+    document.getElementById('wTopic').value='';
+    document.getElementById('wContext').value='';
+    mkChips('wPlatforms',PLATFORMS,['TikTok']);
+    mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
+    document.getElementById('wResult').style.display='none';
+    toast('Limpio');
+  };
+  document.getElementById('wCopyBtn').onclick=()=>{
+    if(!lastDraftRaw) return;
+    navigator.clipboard.writeText(lastDraftRaw).then(()=>toast('Copiado al portapapeles')).catch(()=>toast('Error al copiar'));
+  };
   document.getElementById('wRegenerateBtn').onclick=regenerate;
   document.getElementById('suggestLocalBtn').onclick=suggestLocalTopic;
   document.getElementById('suggestIABtn').onclick=suggestIATopic;
-  document.getElementById('addMemBtn').onclick=()=>{const p=cp();if(!p)return;const title=document.getElementById('memTitle').value.trim();const content=document.getElementById('memContent').value.trim();if(!title||!content)return toast('Escribe título y contenido');app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString()});document.getElementById('memTitle').value='';document.getElementById('memContent').value='';save();renderWsMemory();toast('Memoria guardada')};
+  document.getElementById('addMemBtn').onclick=()=>{
+    const p=cp(); if(!p) return;
+    const title=document.getElementById('memTitle').value.trim();
+    const content=document.getElementById('memContent').value.trim();
+    if(!title||!content) return toast('Escribe título y contenido');
+    app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString()});
+    document.getElementById('memTitle').value='';
+    document.getElementById('memContent').value='';
+    save();
+    renderWsMemory();
+    toast('Memoria guardada');
+  };
   document.getElementById('saveSettingsBtn').onclick=saveSettings;
-  document.getElementById('themeSel').onchange=()=>{app.theme=document.getElementById('themeSel').value;applyTheme(app.theme);save()};
+  document.getElementById('themeSel').onchange=()=>{
+    app.theme=document.getElementById('themeSel').value;
+    applyTheme(app.theme);
+    save();
+  };
   mkChips('wPlatforms',PLATFORMS,['TikTok']);
   mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
   renderProfiles();
@@ -865,7 +927,7 @@ function init(){
   renderSettings();
   registerSW();
 }
-window.addEventListener('DOMContentLoaded',init);
+window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
