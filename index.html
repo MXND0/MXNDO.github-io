@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NeonAI">
@@ -12,7 +11,6 @@
 <title>NEON CREATOR AI - Multi IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ========== ESTILOS COMPLETOS ========== */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#05030d;--bg2:#09051a;--panel:#110a24;
@@ -102,16 +100,12 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </head>
 <body data-theme="neon">
 
-<!-- TOPBAR -->
 <div id="topbar">
   <div id="topbar-logo">NEON <span>CREATOR</span></div>
   <button class="ico-btn" id="modeBtn" title="Claro/Oscuro">◐</button>
   <button class="ico-btn" id="cycleBtn" title="Cambiar tema">✦</button>
 </div>
 
-<!-- SCREENS -->
-
-<!-- HOME -->
 <div class="screen active" id="s-home">
 <div class="screen-inner">
   <div style="margin-bottom:18px">
@@ -152,7 +146,6 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- PROFILES LIST -->
 <div class="screen" id="s-profiles">
 <div class="screen-inner">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -164,7 +157,6 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- PROFILE FORM (crear/editar) -->
 <div class="screen" id="s-profile-form">
 <div class="screen-inner">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
@@ -185,7 +177,6 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- PROFILE WORKSPACE (dentro del perfil) -->
 <div class="screen" id="s-workspace">
 <div class="screen-inner">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
@@ -204,7 +195,6 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     <button class="btn btn-soft ws-tab-btn" data-tab="wt-memory">🧠 Memoria</button>
   </div>
 
-  <!-- TAB: Generar -->
   <div class="ws-tab active" id="wt-gen">
     <div class="fg"><label>Tema o idea central *</label>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
@@ -249,13 +239,11 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     </div>
   </div>
 
-  <!-- TAB: Historial -->
   <div class="ws-tab" id="wt-history" style="display:none">
     <div class="sec-title">Historial del perfil</div>
     <div id="wsHistoryList"></div>
   </div>
 
-  <!-- TAB: Memoria -->
   <div class="ws-tab" id="wt-memory" style="display:none">
     <div class="sec-title">Memoria del perfil</div>
     <div class="fg"><label>Agregar nota de memoria</label><input id="memTitle" placeholder="Título de la nota"/></div>
@@ -267,7 +255,6 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- SETTINGS -->
 <div class="screen" id="s-settings">
 <div class="screen-inner">
   <div style="font-family:var(--display);font-size:20px;margin-bottom:18px">Ajustes</div>
@@ -289,9 +276,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     </div>
     <div class="fg">
       <label>Modelo</label>
-      <select id="modelSel">
-        <!-- Se llena dinámicamente -->
-      </select>
+      <select id="modelSel"></select>
     </div>
     <div class="actions">
       <button class="btn btn-primary" id="saveSettingsBtn">Guardar ajustes</button>
@@ -313,36 +298,19 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     </div>
   </div>
 
-  <div class="fg"><label>Tema visual</label>
-    <select id="themeSel">
-      <option value="neon">🌑 Neon Red (predeterminado)</option>
-      <option value="ice">🧊 Ice Cyber</option>
-      <option value="violet">💜 Violet Pulse</option>
-      <option value="amber">🟠 Amber Grid</option>
-      <option value="cyberRed">🔴 Cyber Red</option>
-      <option value="green">🟢 Matrix Green</option>
-      <option value="pink">💗 Neon Pink</option>
-      <option value="dark">⬛ Dark Core</option>
-      <option value="light">☀️ Light Mode</option>
-    </select>
-  </div>
-
   <div class="divider"></div>
   <div class="sec-title">Acerca de</div>
   <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v2.0 - Múltiples proveedores IA.<br>Cada perfil tiene su propio generador, historial y memoria.</p>
 </div>
 </div>
 
-<!-- BOTTOM NAV -->
 <div id="bnav">
   <div class="bn active" data-screen="s-home"><div class="icon">🏠</div>Inicio</div>
   <div class="bn" data-screen="s-profiles"><div class="icon">👤</div>Perfiles</div>
   <div class="bn" data-screen="s-settings"><div class="icon">⚙️</div>Ajustes</div>
 </div>
 
-<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loader"><div class="spinner"></div></div>
-<!-- Modal de advertencia IA -->
 <div id="iaWarningModal" class="modal-overlay">
   <div class="modal">
     <p><strong>✨ Sugerencia con IA</strong><br>Usará tu API key y consumirá tokens según el proveedor. ¿Deseas continuar?</p>
@@ -352,7 +320,6 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 
 <script>
-// ==================== CONSTANTES GLOBALES ====================
 const KEY = 'neon_ai_v2';
 const THEMES = ['neon','ice','violet','amber','cyberRed','green','pink','dark','light'];
 const PLATFORMS = ['TikTok','YouTube','Reels','Shorts','Twitter/X','Facebook'];
@@ -511,7 +478,6 @@ function mkChips(id, items, defaults) {
 }
 function getChips(id) { return [...document.querySelectorAll('#'+id+' .chip.on')].map(c => c.textContent); }
 
-// ---------- PERFILES ----------
 function renderProfiles() {
   const list = document.getElementById('profilesList');
   const none = document.getElementById('noProfiles');
@@ -615,7 +581,6 @@ function switchWsTab(tabId) {
   if (tabId === 'wt-memory') renderWsMemory();
 }
 
-// ---------- HISTORIAL Y MEMORIA ----------
 function renderWsHistory() {
   const p = cp(); if (!p) return;
   const box = document.getElementById('wsHistoryList');
@@ -665,7 +630,6 @@ function renderHomeRecent() {
   box.innerHTML = recent.map(it => `<div class="hist-item"><b>${esc(it.profileName)} · ${esc(it.topic)}</b><div class="hist-meta"><span>${fmtDate(it.date)}</span></div></div>`).join('');
 }
 
-// ---------- LLAMADA A IA ----------
 async function callAI(prompt) {
   if (!app.key) throw new Error('No hay API Key configurada');
   const provider = PROVIDERS[app.provider];
@@ -712,7 +676,6 @@ async function callAI(prompt) {
   }
 }
 
-// ---------- GENERAR ----------
 async function generate() {
   if (isGenerating) { toast('Ya hay una generación en curso, espera'); return; }
   const p = cp(); if (!p) return toast('Sin perfil activo');
@@ -798,7 +761,6 @@ function regenerate() {
   generate();
 }
 
-// ---------- SUGERENCIAS ----------
 function suggestLocalTopic() {
   const idx = Math.floor(Math.random() * LOCAL_TOPICS.length);
   document.getElementById('wTopic').value = LOCAL_TOPICS[idx];
@@ -854,7 +816,6 @@ Ahora escribe 3 ideas:`;
   });
 }
 
-// ---------- AJUSTES ----------
 function detectProvider(apiKey) {
   if (!apiKey) return 'gemini';
   if (apiKey.startsWith('AIza')) return 'gemini';
@@ -907,14 +868,14 @@ function renderSettings() {
   document.getElementById('themeSel').value = app.theme;
 }
 
-// ---------- SERVICE WORKER ----------
 function registerSW() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registrado', reg)).catch(err => console.warn('Error SW', err));
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registrado', reg))
+      .catch(err => console.warn('Error SW', err));
   }
 }
 
-// ---------- INICIALIZACIÓN ----------
 function init() {
   load();
   if (!app.provider) app.provider = 'gemini';
@@ -929,7 +890,6 @@ function init() {
     navStack = ['s-home'];
     history.replaceState({screen:'s-home'}, '');
   }
-  // Eventos bottom nav
   document.querySelectorAll('.bn').forEach(b => b.onclick = () => {
     const id = b.dataset.screen;
     showScreen(id);
