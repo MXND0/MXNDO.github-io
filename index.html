@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="NeonAI">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<title>NEON CREATOR AI</title>
+<title>NEON CREATOR AI - Multi IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -26,39 +26,26 @@ input,textarea,select{font:inherit;color:inherit;background:rgba(15,25,50,.9);bo
 input:focus,textarea:focus,select:focus{border-color:var(--c1);box-shadow:0 0 0 2px rgba(60,247,255,.1)}
 textarea{resize:vertical;min-height:80px}
 label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.14em;font-weight:700;display:block;margin-bottom:5px}
-
-/* TOPBAR */
 #topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:rgba(5,3,13,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px;z-index:100}
 #topbar-logo{font-family:var(--display);font-size:14px;letter-spacing:.06em;flex:1}
 #topbar-logo span{color:var(--c1)}
 .ico-btn{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--muted);transition:all .15s}
 .ico-btn:hover,.ico-btn.active{background:rgba(60,247,255,.1);color:var(--c1)}
-
-/* SCREENS */
 .screen{display:none;position:fixed;inset:0;padding-top:var(--top);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .screen.active{display:block}
 .screen-inner{max-width:600px;margin:0 auto;padding:18px 14px 100px}
-
-/* BOTTOM NAV */
 #bnav{position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(5,3,13,.95);backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:color .15s;cursor:pointer}
 .bn .icon{font-size:18px}
 .bn.active{color:var(--c1)}
-
-/* CARDS */
 .card{background:linear-gradient(160deg,rgba(20,12,40,.95),rgba(8,10,28,.97));border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
-.card:hover{border-color:rgba(60,247,255,.28)}
 .card h3{font-family:var(--display);font-size:14px;margin-bottom:6px;letter-spacing:.04em}
 .card p{font-size:12px;color:var(--muted);line-height:1.55}
-
-/* PROFILE LIST */
 .profile-item{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);background:linear-gradient(160deg,rgba(20,12,40,.95),rgba(8,10,28,.97));border:1px solid var(--border);margin-bottom:10px;cursor:pointer;transition:all .15s}
 .profile-item:hover,.profile-item.selected{border-color:var(--c1);box-shadow:0 0 0 1px rgba(60,247,255,.1)}
 .avatar{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--c1),var(--c3),var(--laser));display:grid;place-items:center;font-family:var(--display);font-size:16px;font-weight:800;color:#040e18;flex-shrink:0}
 .profile-info{flex:1;min-width:0}.profile-info b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-info span{font-size:11px;color:var(--muted)}
 .profile-actions{display:flex;gap:6px}
-
-/* BUTTONS */
 .btn{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .15s;cursor:pointer}
 .btn-primary{background:linear-gradient(90deg,var(--c1),var(--c2),var(--laser));color:#04101a}
 .btn-soft{border:1px solid var(--border);background:rgba(15,25,50,.9)}
@@ -68,13 +55,9 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 .btn-icon{width:34px;height:34px;padding:0;border-radius:8px;display:grid;place-items:center;flex-shrink:0}
 .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-
-/* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid rgba(80,130,255,.2);background:rgba(12,20,45,.9);cursor:pointer;transition:all .15s}
 .chip.on{color:#03101a;background:linear-gradient(90deg,var(--c1),var(--c2));border-color:transparent}
-
-/* SECTION */
 .sec-title{font-family:var(--display);font-size:12px;letter-spacing:.1em;color:var(--c1);margin-bottom:10px}
 .fg{margin-bottom:12px}
 .divider{height:1px;background:var(--border);margin:16px 0}
@@ -82,21 +65,15 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 .empty b{display:block;color:var(--text);margin-bottom:6px;font-family:var(--display);font-size:14px}
 .badge{padding:4px 8px;border-radius:6px;font-size:10px;font-weight:700;background:rgba(60,247,255,.12);color:var(--c1)}
 .tag{padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;border:1px solid rgba(60,247,255,.2);color:var(--muted)}
-
-/* HISTORY ITEM */
 .hist-item{padding:14px;border-radius:var(--r);border:1px solid var(--border);background:rgba(12,20,45,.8);margin-bottom:10px}
 .hist-item b{display:block;font-size:13px;margin-bottom:4px}
 .hist-meta{font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;gap:8px;flex-wrap:wrap}
 .hist-actions{display:flex;gap:6px;flex-wrap:wrap}
 .hist-body{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;white-space:pre-wrap;display:none}
 .hist-body.open{display:block}
-
-/* OUTPUT */
 .out-block{padding:14px;border-radius:var(--r);background:rgba(8,12,28,.9);border:1px solid var(--border);margin-bottom:10px}
 .out-block .out-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--c1);margin-bottom:8px}
 .out-block .out-text{font-size:13px;line-height:1.65;white-space:pre-wrap}
-
-/* THEMES */
 [data-theme=ice]{--bg:#07111c;--bg2:#0e1b2e;--c1:#5ef0ff;--c2:#57a0ff;--c3:#7c8cff;--c4:#9df3ff;--laser:#2af6d9}
 [data-theme=violet]{--bg:#0a0614;--bg2:#120a22;--c1:#c57fff;--c2:#8c5bff;--c3:#b95bff;--c4:#ff4fd1;--laser:#ff7ad9}
 [data-theme=amber]{--bg:#120c06;--bg2:#1b1208;--c1:#ffcf66;--c2:#ff9f43;--c3:#ff7b7b;--c4:#ff5f5f;--laser:#ffe36b}
@@ -108,16 +85,12 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 [data-theme=light] input,[data-theme=light] textarea,[data-theme=light] select{background:rgba(255,255,255,.9);border-color:rgba(45,75,160,.2)}
 [data-theme=light] .card,[data-theme=light] .profile-item,[data-theme=light] .hist-item,[data-theme=light] .out-block{background:rgba(255,255,255,.92);border-color:rgba(45,75,160,.15)}
 [data-theme=light] body{background:#edf3ff}
-
-/* TOAST */
 .toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;max-width:92vw;text-align:center;border:1px solid var(--border);background:rgba(8,12,30,.95);backdrop-filter:blur(12px);pointer-events:none}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;visibility:hidden;opacity:0;transition:all .2s}
 .modal-overlay.show{visibility:visible;opacity:1}
 .modal{background:var(--bg2);border:1px solid var(--c1);border-radius:20px;max-width:300px;width:80%;padding:20px;text-align:center;box-shadow:0 0 20px rgba(60,247,255,.3)}
 .modal p{margin-bottom:16px;color:var(--text)}
 .modal button{margin:0 8px}
-
-/* LOADING OVERLAY */
 .loading-overlay{position:fixed;inset:0;background:rgba(5,3,13,.75);display:grid;place-items:center;z-index:200;display:none}
 .loading-overlay.show{display:grid}
 .spinner{width:52px;height:52px;border:3px solid rgba(60,247,255,.2);border-top-color:var(--c1);border-radius:50%;animation:spin .7s linear infinite}
@@ -292,37 +265,55 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- SETTINGS -->
+<!-- SETTINGS (NUEVA VERSIÓN CON MÚLTIPLES PROVEEDORES) -->
 <div class="screen" id="s-settings">
 <div class="screen-inner">
   <div style="font-family:var(--display);font-size:20px;margin-bottom:18px">Ajustes</div>
-  <div class="fg"><label>Google Gemini API Key</label><input id="apiKey" type="password" placeholder="AIza..."/></div>
-  <div class="fg"><label>Modelo</label>
-    <select id="modelSel">
-      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-      <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
-      <option value="gemini-2.5-pro">gemini-2.5-pro</option>
-    </select>
+  
+  <div class="card">
+    <div class="sec-title">🔑 Configuración de IA</div>
+    <div class="fg">
+      <label>API Key</label>
+      <input type="password" id="apiKey" placeholder="Pega aquí tu clave de API (Gemini, Groq o Together)">
+      <div style="font-size:11px; color:var(--muted); margin-top:5px" id="apiHelp"></div>
+    </div>
+    <div class="fg">
+      <label>Proveedor</label>
+      <select id="providerSel">
+        <option value="gemini">Google Gemini</option>
+        <option value="groq">Groq</option>
+        <option value="together">Together.ai</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Modelo</label>
+      <select id="modelSel">
+        <!-- Se llena dinámicamente -->
+      </select>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" id="saveSettingsBtn">Guardar ajustes</button>
+      <button class="btn btn-soft" id="detectProviderBtn">🔍 Detectar proveedor</button>
+    </div>
   </div>
-  <div class="fg"><label>Tema visual</label>
-    <select id="themeSel">
-      <option value="neon">🌑 Neon Red (predeterminado)</option>
-      <option value="ice">🧊 Ice Cyber</option>
-      <option value="violet">💜 Violet Pulse</option>
-      <option value="amber">🟠 Amber Grid</option>
-      <option value="cyberRed">🔴 Cyber Red</option>
-      <option value="green">🟢 Matrix Green</option>
-      <option value="pink">💗 Neon Pink</option>
-      <option value="dark">⬛ Dark Core</option>
-      <option value="light">☀️ Light Mode</option>
-    </select>
+
+  <div class="card">
+    <div class="sec-title">📘 ¿Cómo obtener tu API Key?</div>
+    <div style="font-size:12px; line-height:1.6; color:var(--muted)">
+      <p><strong>🔹 Gemini (Google)</strong><br>
+      Ve a <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--c1)">Google AI Studio</a>, inicia sesión, haz clic en "Get API Key". Comienza con <code>AIza</code>.<br>
+      Modelos gratuitos: <code>gemini-2.5-flash</code> (rápido), <code>gemini-2.5-pro</code> (potente). Límite: 60 solicitudes/minuto.</p>
+      <p><strong>🔹 Groq</strong><br>
+      Regístrate en <a href="https://console.groq.com/keys" target="_blank" style="color:var(--c1)">Groq Console</a>, crea una API Key (empieza con <code>gsk_</code>). Ofrece modelos como <code>llama-3.3-70b-versatile</code> (muy rápido). Límite: ~30 req/min.</p>
+      <p><strong>🔹 Together.ai</strong><br>
+      Crea cuenta en <a href="https://api.together.xyz/settings/api-keys" target="_blank" style="color:var(--c1)">Together API</a>, genera una clave (sin prefijo fijo). Tiene crédito inicial de $5 y modelos gratuitos como <code>meta-llama/Llama-3.3-70B-Instruct-Turbo-Free</code>.</p>
+      <p><em>Las claves se guardan solo en tu dispositivo (localStorage). No se comparten.</em></p>
+    </div>
   </div>
-  <div class="actions">
-    <button class="btn btn-primary" id="saveSettingsBtn">Guardar ajustes</button>
-  </div>
+
   <div class="divider"></div>
   <div class="sec-title">Acerca de</div>
-  <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v1.0<br>Generador de contenido por perfil con IA Gemini.<br>Cada perfil tiene su propio generador, historial y memoria.</p>
+  <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v2.0 - Múltiples proveedores IA.<br>Cada perfil tiene su propio generador, historial y memoria.</p>
 </div>
 </div>
 
@@ -338,19 +329,19 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 <!-- Modal de advertencia IA -->
 <div id="iaWarningModal" class="modal-overlay">
   <div class="modal">
-    <p><strong>✨ Sugerencia con IA</strong><br>Usará tu API key de Gemini y consumirá tokens. Ten en cuenta los límites gratuitos. ¿Deseas continuar?</p>
+    <p><strong>✨ Sugerencia con IA</strong><br>Usará tu API key y consumirá tokens según el proveedor. ¿Deseas continuar?</p>
     <div><button class="btn btn-primary" id="iaConfirmBtn">Continuar</button><button class="btn btn-soft" id="iaCancelBtn">Cancelar</button></div>
     <div style="margin-top:12px"><label><input type="checkbox" id="iaDontAskAgain"> No volver a mostrar</label></div>
   </div>
 </div>
 
 <script>
-const KEY='neon_ai_v5';
-const THEMES=['neon','ice','violet','amber','cyberRed','green','pink','dark','light'];
-const PLATFORMS=['TikTok','YouTube','Reels','Shorts','Twitter/X','Facebook'];
-const TYPES=['Guión completo','Ganchos (hooks)','Títulos optimizados','Ideas de contenido','Descripción y hashtags','CTA'];
+// ==================== CONSTANTES GLOBALES ====================
+const KEY = 'neon_ai_v2';
+const THEMES = ['neon','ice','violet','amber','cyberRed','green','pink','dark','light'];
+const PLATFORMS = ['TikTok','YouTube','Reels','Shorts','Twitter/X','Facebook'];
+const TYPES = ['Guión completo','Ganchos (hooks)','Títulos optimizados','Ideas de contenido','Descripción y hashtags','CTA'];
 
-// LISTA LOCAL DE TEMAS (más de 60 ideas variadas)
 const LOCAL_TOPICS = [
   "5 errores que cometen los principiantes y cómo evitarlos",
   "Herramientas gratuitas que todo creador debería conocer",
@@ -394,78 +385,129 @@ const LOCAL_TOPICS = [
   "Cómo conseguir tus primeros 1000 seguidores"
 ];
 
-let app={key:'',model:'gemini-2.5-flash',theme:'neon',profiles:[],history:[],memories:[]};
-let currentProfileId=null;
-let lastDraftRaw='';
-let lastGenParams=null;
-let navStack=[];
+// Proveedores
+const PROVIDERS = {
+  gemini: {
+    name: 'Gemini',
+    models: ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'],
+    defaultModel: 'gemini-2.5-flash',
+    getUrl: (key, model) => `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+    buildBody: (prompt, model) => ({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.85, maxOutputTokens: 8192 } }),
+    extractText: (data) => data?.candidates?.[0]?.content?.parts?.[0]?.text,
+    keyPattern: /^AIza/,
+    rateLimit: '60 req/min',
+    needsBearer: false
+  },
+  groq: {
+    name: 'Groq',
+    models: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'],
+    defaultModel: 'llama-3.3-70b-versatile',
+    getUrl: () => 'https://api.groq.com/openai/v1/chat/completions',
+    buildBody: (prompt, model) => ({
+      messages: [{ role: 'user', content: prompt }],
+      model: model,
+      temperature: 0.85,
+      max_tokens: 4096
+    }),
+    extractText: (data) => data?.choices?.[0]?.message?.content,
+    keyPattern: /^gsk_/,
+    rateLimit: '~30 req/min',
+    needsBearer: true
+  },
+  together: {
+    name: 'Together.ai',
+    models: ['meta-llama/Llama-3.3-70B-Instruct-Turbo-Free', 'mistralai/Mixtral-8x7B-Instruct-v0.1'],
+    defaultModel: 'meta-llama/Llama-3.3-70B-Instruct-Turbo-Free',
+    getUrl: () => 'https://api.together.xyz/v1/chat/completions',
+    buildBody: (prompt, model) => ({
+      messages: [{ role: 'user', content: prompt }],
+      model: model,
+      temperature: 0.85,
+      max_tokens: 4096
+    }),
+    extractText: (data) => data?.choices?.[0]?.message?.content,
+    keyPattern: null,
+    rateLimit: 'Crédito $5 inicial, luego pago',
+    needsBearer: true
+  }
+};
 
-function save(){localStorage.setItem(KEY,JSON.stringify(app))}
-function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)}}catch(e){}}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function esc(s=''){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
-function fmtDate(d){const t=(Date.now()-new Date(d))/1e3;if(t<60)return'ahora';if(t<3600)return Math.floor(t/60)+'m';if(t<86400)return Math.floor(t/3600)+'h';return new Date(d).toLocaleDateString('es-MX',{day:'numeric',month:'short'})}
-function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),1800)}
-function loader(on){document.getElementById('loader').classList.toggle('show',on)}
-function cp(){return app.profiles.find(p=>p.id===currentProfileId)}
-function initials(name){return(name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
-function applyTheme(t){document.body.dataset.theme=t||'neon'}
-function syncThemeSelect(){const sel=document.getElementById('themeSel');if(sel)sel.value=app.theme;}
-function cycleTheme(){const i=THEMES.indexOf(app.theme||'neon');app.theme=THEMES[(i+1)%THEMES.length];applyTheme(app.theme);syncThemeSelect();save();toast('Tema: '+app.theme);}
-function toggleMode(){app.theme=(app.theme==='light'?'dark':'light');applyTheme(app.theme);syncThemeSelect();save();toast('Modo: '+app.theme);}
+// ==================== ESTADO GLOBAL ====================
+let app = {
+  key: '',
+  provider: 'gemini',
+  model: 'gemini-2.5-flash',
+  theme: 'neon',
+  profiles: [],
+  history: [],
+  memories: []
+};
+let currentProfileId = null;
+let lastDraftRaw = '';
+let lastGenParams = null;
+let navStack = [];
+let isGenerating = false;
+let iaWarningAccepted = false;
+
+// ==================== FUNCIONES AUXILIARES ====================
+function save() { localStorage.setItem(KEY, JSON.stringify(app)); }
+function load() { try { const r = localStorage.getItem(KEY); if (r) app = { ...app, ...JSON.parse(r) }; } catch(e) {} }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function esc(s='') { return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+function fmtDate(d) { const t = (Date.now() - new Date(d))/1000; if (t<60) return 'ahora'; if (t<3600) return Math.floor(t/60)+'m'; if (t<86400) return Math.floor(t/3600)+'h'; return new Date(d).toLocaleDateString('es-MX',{day:'numeric',month:'short'}); }
+function toast(msg) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; document.body.appendChild(el); setTimeout(() => el.remove(), 1800); }
+function loader(on) { document.getElementById('loader').classList.toggle('show', on); }
+function cp() { return app.profiles.find(p => p.id === currentProfileId); }
+function initials(name) { return (name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function applyTheme(t) { document.body.dataset.theme = t || 'neon'; }
+function syncThemeSelect() { const sel = document.getElementById('themeSel'); if (sel) sel.value = app.theme; }
+function cycleTheme() { const i = THEMES.indexOf(app.theme||'neon'); app.theme = THEMES[(i+1)%THEMES.length]; applyTheme(app.theme); syncThemeSelect(); save(); toast('Tema: '+app.theme); }
+function toggleMode() { app.theme = (app.theme==='light'?'dark':'light'); applyTheme(app.theme); syncThemeSelect(); save(); toast('Modo: '+app.theme); }
 
 // Navegación con historial
-function showScreen(id, addToHistory=true){
-  const currentActive=document.querySelector('.screen.active')?.id;
-  if(currentActive===id) return;
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+function showScreen(id, addToHistory=true) {
+  const currentActive = document.querySelector('.screen.active')?.id;
+  if (currentActive === id) return;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));
+  document.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', b.dataset.screen === id));
   window.scrollTo(0,0);
-  if(addToHistory && navStack[navStack.length-1] !== id){
+  if (addToHistory && navStack[navStack.length-1] !== id) {
     navStack.push(id);
     history.pushState({screen:id}, '', '');
   }
 }
-function goBack(){
-  if(navStack.length>1){
-    navStack.pop();
-    const prev=navStack[navStack.length-1];
-    showScreen(prev, false);
-  } else {
-    history.back();
-  }
-}
 window.addEventListener('popstate', (event) => {
-  if(navStack.length>1){
+  if (navStack.length > 1) {
     navStack.pop();
-    const prev=navStack[navStack.length-1];
+    const prev = navStack[navStack.length-1];
     showScreen(prev, false);
   }
 });
 
-function mkChips(id,items,defaults){
-  const box=document.getElementById(id);
-  box.innerHTML='';
-  items.forEach(x=>{
-    const c=document.createElement('button');
-    c.className='chip'+(defaults.includes(x)?' on':'');
-    c.type='button';
-    c.textContent=x;
-    c.onclick=()=>c.classList.toggle('on');
+function mkChips(id, items, defaults) {
+  const box = document.getElementById(id);
+  box.innerHTML = '';
+  items.forEach(x => {
+    const c = document.createElement('button');
+    c.className = 'chip' + (defaults.includes(x) ? ' on' : '');
+    c.type = 'button';
+    c.textContent = x;
+    c.onclick = () => c.classList.toggle('on');
     box.appendChild(c);
   });
 }
-function getChips(id){return[...document.querySelectorAll('#'+id+' .chip.on')].map(c=>c.textContent)}
+function getChips(id) { return [...document.querySelectorAll('#'+id+' .chip.on')].map(c => c.textContent); }
 
-function renderProfiles(){
-  const list=document.getElementById('profilesList');
-  const none=document.getElementById('noProfiles');
-  if(!app.profiles.length){list.innerHTML='';none.style.display='block';return}
-  none.style.display='none';
-  list.innerHTML=app.profiles.map(p=>{
-    const hc=app.history.filter(h=>h.profileId===p.id).length;
-    return`<div class="profile-item" id="pi-${p.id}">
+// ==================== PERFILES ====================
+function renderProfiles() {
+  const list = document.getElementById('profilesList');
+  const none = document.getElementById('noProfiles');
+  if (!app.profiles.length) { list.innerHTML = ''; none.style.display = 'block'; return; }
+  none.style.display = 'none';
+  list.innerHTML = app.profiles.map(p => {
+    const hc = app.history.filter(h => h.profileId === p.id).length;
+    return `<div class="profile-item" id="pi-${p.id}">
       <div class="avatar">${initials(p.name)}</div>
       <div class="profile-info">
         <b>${esc(p.name)}</b>
@@ -478,43 +520,43 @@ function renderProfiles(){
       </div>
     </div>`;
   }).join('');
-  list.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openWorkspace(b.dataset.open));
-  list.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProfile(b.dataset.edit));
-  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();delProfile(b.dataset.del)});
+  list.querySelectorAll('[data-open]').forEach(b => b.onclick = () => openWorkspace(b.dataset.open));
+  list.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => editProfile(b.dataset.edit));
+  list.querySelectorAll('[data-del]').forEach(b => b.onclick = e => { e.stopPropagation(); delProfile(b.dataset.del); });
 }
 
-function openNewProfile(){
-  document.getElementById('pfEditId').value='';
-  document.getElementById('formTitle').textContent='Nuevo perfil';
-  ['pfName','pfNiche','pfAudience','pfTone','pfDesc','pfCta'].forEach(id=>document.getElementById(id).value='');
+function openNewProfile() {
+  document.getElementById('pfEditId').value = '';
+  document.getElementById('formTitle').textContent = 'Nuevo perfil';
+  ['pfName','pfNiche','pfAudience','pfTone','pfDesc','pfCta'].forEach(id => document.getElementById(id).value = '');
   showScreen('s-profile-form');
 }
-function editProfile(id){
-  const p=app.profiles.find(x=>x.id===id);
-  if(!p)return;
-  document.getElementById('pfEditId').value=id;
-  document.getElementById('formTitle').textContent='Editar perfil';
-  document.getElementById('pfName').value=p.name||'';
-  document.getElementById('pfNiche').value=p.niche||'';
-  document.getElementById('pfAudience').value=p.audience||'';
-  document.getElementById('pfTone').value=p.tone||'';
-  document.getElementById('pfDesc').value=p.description||'';
-  document.getElementById('pfCta').value=p.cta||'';
+function editProfile(id) {
+  const p = app.profiles.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('pfEditId').value = id;
+  document.getElementById('formTitle').textContent = 'Editar perfil';
+  document.getElementById('pfName').value = p.name || '';
+  document.getElementById('pfNiche').value = p.niche || '';
+  document.getElementById('pfAudience').value = p.audience || '';
+  document.getElementById('pfTone').value = p.tone || '';
+  document.getElementById('pfDesc').value = p.description || '';
+  document.getElementById('pfCta').value = p.cta || '';
   showScreen('s-profile-form');
 }
-function saveProfile(){
-  const name=document.getElementById('pfName').value.trim();
-  if(!name)return toast('Ponle nombre al perfil');
-  const data={name,niche:document.getElementById('pfNiche').value.trim(),audience:document.getElementById('pfAudience').value.trim(),tone:document.getElementById('pfTone').value.trim(),description:document.getElementById('pfDesc').value.trim(),cta:document.getElementById('pfCta').value.trim()};
-  const editId=document.getElementById('pfEditId').value;
-  if(editId){
-    const p=app.profiles.find(x=>x.id===editId);
-    Object.assign(p,data);
+function saveProfile() {
+  const name = document.getElementById('pfName').value.trim();
+  if (!name) return toast('Ponle nombre al perfil');
+  const data = { name, niche: document.getElementById('pfNiche').value.trim(), audience: document.getElementById('pfAudience').value.trim(), tone: document.getElementById('pfTone').value.trim(), description: document.getElementById('pfDesc').value.trim(), cta: document.getElementById('pfCta').value.trim() };
+  const editId = document.getElementById('pfEditId').value;
+  if (editId) {
+    const p = app.profiles.find(x => x.id === editId);
+    Object.assign(p, data);
     toast('Perfil actualizado');
     save();
-    if(currentProfileId===editId)loadWorkspaceHeader();
-  }else{
-    const p={id:uid(),...data};
+    if (currentProfileId === editId) loadWorkspaceHeader();
+  } else {
+    const p = { id: uid(), ...data };
     app.profiles.push(p);
     toast('Perfil creado');
     save();
@@ -522,87 +564,250 @@ function saveProfile(){
   renderProfiles();
   showScreen('s-profiles');
 }
-function delProfile(id){
-  if(!confirm(`¿Borrar el perfil "${app.profiles.find(p=>p.id===id)?.name}" y todo su historial?`))return;
-  app.profiles=app.profiles.filter(x=>x.id!==id);
-  app.history=app.history.filter(x=>x.profileId!==id);
-  app.memories=app.memories.filter(x=>x.profileId!==id);
-  if(currentProfileId===id){currentProfileId=null;sessionStorage.removeItem('lastProfileId');}
-  save();renderProfiles();toast('Perfil borrado');
+function delProfile(id) {
+  if (!confirm(`¿Borrar el perfil "${app.profiles.find(p=>p.id===id)?.name}" y todo su historial?`)) return;
+  app.profiles = app.profiles.filter(x => x.id !== id);
+  app.history = app.history.filter(x => x.profileId !== id);
+  app.memories = app.memories.filter(x => x.profileId !== id);
+  if (currentProfileId === id) { currentProfileId = null; sessionStorage.removeItem('lastProfileId'); }
+  save(); renderProfiles(); toast('Perfil borrado');
 }
 
-function openWorkspace(id){
-  currentProfileId=id;
-  sessionStorage.setItem('lastProfileId',id);
+function openWorkspace(id) {
+  currentProfileId = id;
+  sessionStorage.setItem('lastProfileId', id);
   loadWorkspaceHeader();
   switchWsTab('wt-gen');
-  mkChips('wPlatforms',PLATFORMS,['TikTok']);
-  mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
-  document.getElementById('wTopic').value='';
-  document.getElementById('wContext').value='';
-  document.getElementById('wResult').style.display='none';
+  mkChips('wPlatforms', PLATFORMS, ['TikTok']);
+  mkChips('wTypes', TYPES, ['Guión completo','Ideas de contenido']);
+  document.getElementById('wTopic').value = '';
+  document.getElementById('wContext').value = '';
+  document.getElementById('wResult').style.display = 'none';
   showScreen('s-workspace');
 }
-function loadWorkspaceHeader(){
-  const p=cp();if(!p)return;
-  document.getElementById('wsAvatar').textContent=initials(p.name);
-  document.getElementById('wsName').textContent=p.name;
-  document.getElementById('wsNiche').textContent=p.niche||'Sin nicho';
-  document.getElementById('wTone').value=p.tone||'Energético y motivador';
+function loadWorkspaceHeader() {
+  const p = cp(); if (!p) return;
+  document.getElementById('wsAvatar').textContent = initials(p.name);
+  document.getElementById('wsName').textContent = p.name;
+  document.getElementById('wsNiche').textContent = p.niche || 'Sin nicho';
+  document.getElementById('wTone').value = p.tone || 'Energético y motivador';
 }
-function switchWsTab(tabId){
-  document.querySelectorAll('.ws-tab').forEach(t=>t.style.display='none');
-  document.getElementById(tabId).style.display='block';
-  document.querySelectorAll('.ws-tab-btn').forEach(b=>{
-    const on=b.dataset.tab===tabId;
-    b.className='btn '+(on?'btn-primary':'btn-soft')+' ws-tab-btn';
+function switchWsTab(tabId) {
+  document.querySelectorAll('.ws-tab').forEach(t => t.style.display = 'none');
+  document.getElementById(tabId).style.display = 'block';
+  document.querySelectorAll('.ws-tab-btn').forEach(b => {
+    const on = b.dataset.tab === tabId;
+    b.className = 'btn ' + (on ? 'btn-primary' : 'btn-soft') + ' ws-tab-btn';
   });
-  if(tabId==='wt-history')renderWsHistory();
-  if(tabId==='wt-memory')renderWsMemory();
+  if (tabId === 'wt-history') renderWsHistory();
+  if (tabId === 'wt-memory') renderWsMemory();
 }
 
-// ---------- SUGERENCIA LOCAL ----------
-function suggestLocalTopic(){
-  const randomIndex = Math.floor(Math.random() * LOCAL_TOPICS.length);
-  document.getElementById('wTopic').value = LOCAL_TOPICS[randomIndex];
+// ==================== HISTORIAL Y MEMORIA ====================
+function renderWsHistory() {
+  const p = cp(); if (!p) return;
+  const box = document.getElementById('wsHistoryList');
+  const items = app.history.filter(h => h.profileId === p.id).slice().reverse();
+  if (!items.length) { box.innerHTML = '<div class="empty"><b>Sin historial</b><p>Genera contenido para verlo aquí.</p></div>'; return; }
+  box.innerHTML = items.map(it => `
+    <div class="hist-item" id="hi-${it.id}">
+      <b>${esc(it.topic)}</b>
+      <div class="hist-meta">
+        <span class="tag">${esc(it.tone||'-')}</span>
+        <span>${fmtDate(it.date)}</span>
+        <span>${esc((it.platforms||[]).join(', '))}</span>
+      </div>
+      <div class="hist-body" id="hb-${it.id}">${(it.blocks||[]).map(b => `<div style="margin-bottom:10px"><div class="out-type">${esc(b.type)}</div><div class="out-text" style="font-size:12px">${esc(b.content)}</div></div>`).join('')}</div>
+      <div class="hist-actions">
+        <button class="btn btn-soft" data-view="${it.id}">Ver</button>
+        <button class="btn btn-soft" data-use="${it.id}">Usar</button>
+        <button class="btn btn-soft" data-edit="${it.id}">Editar tema</button>
+        <button class="btn btn-danger" data-hdel="${it.id}">Borrar</button>
+      </div>
+    </div>`).join('');
+  box.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { const id = b.dataset.view; const el = document.getElementById('hb-'+id); el.classList.toggle('open'); b.textContent = el.classList.contains('open') ? 'Ocultar' : 'Ver'; });
+  box.querySelectorAll('[data-use]').forEach(b => b.onclick = () => { const it = app.history.find(x => x.id === b.dataset.use); if (!it) return; document.getElementById('wTopic').value = it.topic||''; document.getElementById('wContext').value = it.context||''; document.getElementById('wTone').value = it.tone||'Energético y motivador'; mkChips('wPlatforms', PLATFORMS, it.platforms||[]); mkChips('wTypes', TYPES, it.types||[]); switchWsTab('wt-gen'); toast('Cargado al generador'); });
+  box.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => { const it = app.history.find(x => x.id === b.dataset.edit); if (!it) return; const t = prompt('Editar tema:', it.topic||''); if (t === null) return; it.topic = t.trim() || it.topic; save(); renderWsHistory(); });
+  box.querySelectorAll('[data-hdel]').forEach(b => b.onclick = () => { if (!confirm('¿Borrar esta generación?')) return; app.history = app.history.filter(x => x.id !== b.dataset.hdel); save(); renderWsHistory(); });
+}
+function renderWsMemory() {
+  const p = cp(); if (!p) return;
+  const box = document.getElementById('wsMemoryList');
+  const items = app.memories.filter(m => m.profileId === p.id).slice().reverse();
+  if (!items.length) { box.innerHTML = '<div class="empty"><b>Sin memoria</b><p>Agrega notas o se crean automáticamente al generar.</p></div>'; return; }
+  box.innerHTML = items.map(m => `
+    <div class="hist-item">
+      <b>${esc(m.title)}</b>
+      <div class="hist-meta"><span>${fmtDate(m.date)}</span></div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">${esc(m.content.slice(0,280))}</p>
+      <div class="hist-actions" style="margin-top:8px"><button class="btn btn-danger" data-mdel="${m.id}">Borrar</button></div>
+    </div>`).join('');
+  box.querySelectorAll('[data-mdel]').forEach(b => b.onclick = () => { if (!confirm('¿Borrar esta memoria?')) return; app.memories = app.memories.filter(x => x.id !== b.dataset.mdel); save(); renderWsMemory(); });
+}
+function renderHomeRecent() {
+  const recent = app.history.slice(-3).reverse();
+  const sec = document.getElementById('homeRecentSection');
+  const box = document.getElementById('homeRecent');
+  if (!recent.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  box.innerHTML = recent.map(it => `<div class="hist-item"><b>${esc(it.profileName)} · ${esc(it.topic)}</b><div class="hist-meta"><span>${fmtDate(it.date)}</span></div></div>`).join('');
+}
+
+// ==================== LLAMADA A IA MULTIPROVEEDOR ====================
+async function callAI(prompt) {
+  if (!app.key) throw new Error('No hay API Key configurada');
+  const provider = PROVIDERS[app.provider];
+  if (!provider) throw new Error('Proveedor no soportado');
+  
+  let url;
+  try {
+    if (app.provider === 'gemini') {
+      url = provider.getUrl(app.key, app.model);
+    } else {
+      url = provider.getUrl();
+    }
+    if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+      throw new Error('URL inválida: ' + url);
+    }
+  } catch(e) {
+    throw new Error('Error construyendo URL: ' + e.message);
+  }
+  
+  const body = provider.buildBody(prompt, app.model);
+  const headers = { 'Content-Type': 'application/json' };
+  if (provider.needsBearer) headers['Authorization'] = `Bearer ${app.key}`;
+  if (app.provider === 'together') {
+    headers['HTTP-Referer'] = 'https://mxnd0.github.io/MXNDO.github-io/';
+  }
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 60000);
+  try {
+    const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal: controller.signal });
+    clearTimeout(timeoutId);
+    if (!res.ok) {
+      let errMsg = `HTTP ${res.status}`;
+      try { const errData = await res.json(); errMsg = errData.error?.message || errData.error || errMsg; } catch(e) {}
+      throw new Error(errMsg);
+    }
+    const data = await res.json();
+    const text = provider.extractText(data);
+    if (!text) throw new Error('Respuesta sin texto');
+    return text;
+  } catch(e) {
+    if (e.name === 'AbortError') throw new Error('Tiempo de espera agotado (60s)');
+    throw e;
+  }
+}
+
+// ==================== GENERAR CONTENIDO ====================
+async function generate() {
+  if (isGenerating) { toast('Ya hay una generación en curso, espera'); return; }
+  const p = cp(); if (!p) return toast('Sin perfil activo');
+  const topic = document.getElementById('wTopic').value.trim();
+  if (!topic) return toast('Escribe un tema');
+  if (!app.key) return toast('Configura tu API Key en Ajustes');
+  const types = getChips('wTypes');
+  if (!types.length) return toast('Elige al menos un tipo');
+  const platforms = getChips('wPlatforms');
+  const tone = document.getElementById('wTone').value;
+  const context = document.getElementById('wContext').value.trim();
+  const memMode = document.getElementById('wMemMode').value;
+  lastGenParams = { topic, tone, platforms, types, context, memMode };
+  const mems = app.memories.filter(m => m.profileId === p.id);
+  const memText = memMode === 'none' ? '' : (memMode === 'last3' ? mems.slice(-3).map(m => `- ${m.title}: ${m.content}`).join('\n') : mems.map(m => `- ${m.title}: ${m.content}`).join('\n'));
+  const prompt = `Eres un estratega senior de redes sociales. Responde siempre en español.
+
+PERFIL
+- Nombre: ${p.name}
+- Nicho: ${p.niche || 'General'}
+- Audiencia: ${p.audience || 'General'}
+- Tono base: ${p.tone || 'Natural'}
+- Descripción: ${p.description || ''}
+- CTA: ${p.cta || ''}
+
+MEMORIA${memText ? '\n' + memText : '\n- Sin memoria previa'}
+
+TAREA
+- Tema: ${topic}
+- Tono: ${tone}
+- Plataformas: ${platforms.join(', ')}
+- Tipos de contenido: ${types.join(', ')}
+- Contexto extra: ${context || 'Ninguno'}
+
+Devuelve cada sección con formato:
+=== TIPO: [nombre] ===
+[contenido]
+
+Al final agrega: POTENCIAL: [número del 1 al 100]`;
+  loader(true);
+  isGenerating = true;
+  const genBtn = document.getElementById('wGenBtn');
+  genBtn.disabled = true;
+  genBtn.innerHTML = '<span class="loader-mini"></span> Generando...';
+  try {
+    const txt = await callAI(prompt);
+    lastDraftRaw = txt;
+    const blocks = parseOutput(txt);
+    renderResult(blocks);
+    const draft = { id: uid(), profileId: p.id, profileName: p.name, date: new Date().toISOString(), topic, tone, platforms, types, context, blocks, raw: txt };
+    app.history.push(draft);
+    app.memories.push({ id: uid(), profileId: p.id, title: 'Generado: ' + topic, content: blocks.map(b => b.type + ': ' + b.content.slice(0,200)).join(' | '), date: new Date().toISOString() });
+    const perProfile = app.memories.filter(m => m.profileId === p.id);
+    if (perProfile.length > 30) { const toRemove = perProfile.slice(0, perProfile.length-30); app.memories = app.memories.filter(m => !toRemove.includes(m)); }
+    save();
+    toast('✅ Generado y guardado');
+  } catch(e) {
+    toast('❌ Error: ' + e.message);
+  } finally {
+    loader(false);
+    isGenerating = false;
+    genBtn.disabled = false;
+    genBtn.innerHTML = '⚡ Generar';
+  }
+}
+function parseOutput(txt) {
+  const parts = txt.split(/===\s*TIPO:/i).filter(Boolean);
+  if (parts.length < 2) return [{ type: 'Resultado', content: txt.trim() }];
+  return parts.map(p => { const lines = p.trim().split('\n'); const type = lines.shift().replace(/===/g,'').trim(); const content = lines.join('\n').replace(/POTENCIAL:.*$/im,'').trim(); return { type, content }; });
+}
+function renderResult(blocks) {
+  document.getElementById('wCards').innerHTML = blocks.map(b => `<div class="out-block"><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('');
+  document.getElementById('wResult').style.display = 'block';
+}
+function regenerate() {
+  if (!lastGenParams) { toast('No hay generación previa para regenerar'); return; }
+  document.getElementById('wTopic').value = lastGenParams.topic;
+  document.getElementById('wTone').value = lastGenParams.tone;
+  document.getElementById('wContext').value = lastGenParams.context || '';
+  document.getElementById('wMemMode').value = lastGenParams.memMode || 'last3';
+  mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
+  mkChips('wTypes', TYPES, lastGenParams.types);
+  generate();
+}
+
+// ==================== SUGERENCIAS ====================
+function suggestLocalTopic() {
+  const idx = Math.floor(Math.random() * LOCAL_TOPICS.length);
+  document.getElementById('wTopic').value = LOCAL_TOPICS[idx];
   toast('Tema local sugerido');
 }
-
-// ---------- SUGERENCIA IA MEJORADA ----------
-let iaWarningAccepted = false;
-function showIaWarning(callback){
-  if(iaWarningAccepted) {
-    callback();
-    return;
-  }
+function showIaWarning(callback) {
+  if (iaWarningAccepted) { callback(); return; }
   const modal = document.getElementById('iaWarningModal');
   modal.classList.add('show');
   const confirmBtn = document.getElementById('iaConfirmBtn');
   const cancelBtn = document.getElementById('iaCancelBtn');
   const dontAsk = document.getElementById('iaDontAskAgain');
-  const handlerConfirm = () => {
-    if(dontAsk.checked) iaWarningAccepted = true;
-    modal.classList.remove('show');
-    callback();
-    clean();
-  };
-  const handlerCancel = () => {
-    modal.classList.remove('show');
-    clean();
-  };
-  const clean = () => {
-    confirmBtn.removeEventListener('click', handlerConfirm);
-    cancelBtn.removeEventListener('click', handlerCancel);
-  };
+  const handlerConfirm = () => { if (dontAsk.checked) iaWarningAccepted = true; modal.classList.remove('show'); callback(); clean(); };
+  const handlerCancel = () => { modal.classList.remove('show'); clean(); };
+  const clean = () => { confirmBtn.removeEventListener('click', handlerConfirm); cancelBtn.removeEventListener('click', handlerCancel); };
   confirmBtn.addEventListener('click', handlerConfirm);
   cancelBtn.addEventListener('click', handlerCancel);
 }
-
-async function suggestIATopic(){
-  const p = cp();
-  if(!p) return toast('Primero abre un perfil');
-  if(!app.key) return toast('Configura tu API Key en Ajustes');
-  
+async function suggestIATopic() {
+  const p = cp(); if (!p) return toast('Primero abre un perfil');
+  if (!app.key) return toast('Configura tu API Key en Ajustes');
   showIaWarning(async () => {
     const btnIa = document.getElementById('suggestIABtn');
     const originalText = btnIa.innerHTML;
@@ -618,30 +823,18 @@ Perfil:
 - Descripción: ${p.description || ''}
 
 Ahora escribe 3 ideas:`;
-      
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.9, maxOutputTokens:200}})
-      });
-      if(!res.ok) throw new Error('Error al obtener sugerencia');
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if(!text) throw new Error('Sin respuesta');
-      
-      let lines = text.split('\n').filter(l=>l.trim().length>5);
-      if(lines.length===0) lines = [text.trim()];
+      const txt = await callAI(prompt);
+      let lines = txt.split('\n').filter(l => l.trim().length > 5);
+      if (lines.length === 0) lines = [txt.trim()];
       const randomIdea = lines[Math.floor(Math.random() * lines.length)];
       const cleanIdea = randomIdea.replace(/^[\d\-•*]+\.?\s*/, '').trim();
-      if(cleanIdea.length > 5) {
+      if (cleanIdea.length > 5) {
         document.getElementById('wTopic').value = cleanIdea;
         toast('Sugerencia IA aplicada');
-      } else {
-        throw new Error('Idea demasiado corta');
-      }
-    } catch(e){
-      toast('Error IA: '+e.message);
-      suggestLocalTopic(); // fallback
+      } else throw new Error('Idea demasiado corta');
+    } catch(e) {
+      toast('Error IA: ' + e.message);
+      suggestLocalTopic();
     } finally {
       btnIa.innerHTML = originalText;
       btnIa.disabled = false;
@@ -649,279 +842,146 @@ Ahora escribe 3 ideas:`;
   });
 }
 
-// ---------- GENERAR CON LOADER Y CONTROL DE MÚLTIPLES LLAMADAS ----------
-let isGenerating = false;
-
-async function generate(){
-  if(isGenerating) {
-    toast('Ya hay una generación en curso, espera');
-    return;
-  }
-  const p=cp(); if(!p) return toast('Sin perfil activo');
-  const topic=document.getElementById('wTopic').value.trim();
-  if(!topic) return toast('Escribe un tema');
-  if(!app.key) return toast('Configura tu API Key en Ajustes');
-  const types=getChips('wTypes');
-  if(!types.length) return toast('Elige al menos un tipo');
-  const platforms=getChips('wPlatforms');
-  const tone=document.getElementById('wTone').value;
-  const context=document.getElementById('wContext').value.trim();
-  const memMode=document.getElementById('wMemMode').value;
-  
-  lastGenParams = { topic, tone, platforms, types, context, memMode };
-  
-  const mems=app.memories.filter(m=>m.profileId===p.id);
-  const memText=memMode==='none'?'':memMode==='last3'?mems.slice(-3).map(m=>`- ${m.title}: ${m.content}`).join('\n'):mems.map(m=>`- ${m.title}: ${m.content}`).join('\n');
-  const prompt=`Eres un estratega senior de redes sociales. Responde siempre en español.
-
-PERFIL
-- Nombre: ${p.name}
-- Nicho: ${p.niche||'General'}
-- Audiencia: ${p.audience||'General'}
-- Tono base: ${p.tone||'Natural'}
-- Descripción: ${p.description||''}
-- CTA: ${p.cta||''}
-
-MEMORIA${memText?'\n'+memText:'\n- Sin memoria previa'}
-
-TAREA
-- Tema: ${topic}
-- Tono: ${tone}
-- Plataformas: ${platforms.join(', ')}
-- Tipos de contenido: ${types.join(', ')}
-- Contexto extra: ${context||'Ninguno'}
-
-Devuelve cada sección con formato:
-=== TIPO: [nombre] ===
-[contenido]
-
-Al final agrega: POTENCIAL: [número del 1 al 100]`;
-  
-  loader(true);
-  isGenerating = true;
-  const genBtn = document.getElementById('wGenBtn');
-  genBtn.disabled = true;
-  genBtn.innerHTML = '<span class="loader-mini"></span> Generando...';
-  
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 60000);
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:8192}}),
-      signal:controller.signal
-    });
-    clearTimeout(timeoutId);
-    if(!res.ok){
-      let errMsg=`HTTP ${res.status}`;
-      try{const errData=await res.json();errMsg=errData.error?.message||errMsg;}catch(e){}
-      if(errMsg.includes('quota') || errMsg.includes('Quota')) {
-        errMsg = '⏳ Has excedido el límite gratuito de Gemini. Espera 1 minuto y vuelve a intentar.';
+// ==================== AJUSTES ====================
+function detectProvider(apiKey) {
+  if (!apiKey) return 'gemini';
+  if (apiKey.startsWith('AIza')) return 'gemini';
+  if (apiKey.startsWith('gsk_')) return 'groq';
+  return 'together';
+}
+function updateModelSelect() {
+  const provider = document.getElementById('providerSel').value;
+  const modelSelect = document.getElementById('modelSel');
+  const models = PROVIDERS[provider].models;
+  modelSelect.innerHTML = models.map(m => `<option value="${m}" ${app.model === m ? 'selected' : ''}>${m}</option>`).join('');
+}
+function updateApiHelp() {
+  const provider = document.getElementById('providerSel').value;
+  const info = PROVIDERS[provider];
+  document.getElementById('apiHelp').innerHTML = `🔑 Clave de ${info.name}. ${info.keyPattern ? 'Formato esperado: ' + info.keyPattern : 'Sin formato fijo.'} Límite: ${info.rateLimit}.`;
+}
+function saveSettings() {
+  const newKey = document.getElementById('apiKey').value.trim();
+  const newProvider = document.getElementById('providerSel').value;
+  const newModel = document.getElementById('modelSel').value;
+  app.key = newKey;
+  app.provider = newProvider;
+  app.model = newModel;
+  if (newKey) {
+    const detected = detectProvider(newKey);
+    if (detected !== newProvider) {
+      toast(`💡 La clave parece de ${PROVIDERS[detected].name}. Cambiando proveedor automáticamente.`);
+      document.getElementById('providerSel').value = detected;
+      app.provider = detected;
+      updateModelSelect();
+      const defaultMod = PROVIDERS[detected].defaultModel;
+      if (defaultMod && !PROVIDERS[detected].models.includes(app.model)) {
+        app.model = defaultMod;
+        document.getElementById('modelSel').value = app.model;
       }
-      throw new Error(errMsg);
     }
-    const data=await res.json();
-    if(!data.candidates||data.candidates.length===0) throw new Error('La API no devolvió candidatos');
-    const parts=data.candidates[0].content?.parts;
-    if(!parts||!parts[0]?.text) throw new Error('Respuesta sin texto');
-    const txt=parts[0].text;
-    if(!txt) throw new Error('Texto vacío');
-    lastDraftRaw=txt;
-    const blocks=parseOutput(txt);
-    renderResult(blocks);
-    const draft={id:uid(),profileId:p.id,profileName:p.name,date:new Date().toISOString(),topic,tone,platforms,types,context,blocks,raw:txt};
-    app.history.push(draft);
-    app.memories.push({id:uid(),profileId:p.id,title:'Generado: '+topic,content:blocks.map(b=>b.type+': '+b.content.slice(0,200)).join(' | '),date:new Date().toISOString()});
-    const perProfileMemories=app.memories.filter(m=>m.profileId===p.id);
-    if(perProfileMemories.length>30){
-      const toRemove=perProfileMemories.slice(0,perProfileMemories.length-30);
-      app.memories=app.memories.filter(m=>!toRemove.includes(m));
-    }
-    save();
-    toast('✅ Generado y guardado');
-  }catch(e){
-    if(e.name==='AbortError') toast('⏰ Tiempo de espera agotado (60s)');
-    else toast('❌ Error: '+e.message);
-  }finally{
-    loader(false);
-    isGenerating = false;
-    genBtn.disabled = false;
-    genBtn.innerHTML = '⚡ Generar';
   }
-}
-
-function parseOutput(txt){
-  const parts=txt.split(/===\s*TIPO:/i).filter(Boolean);
-  if(parts.length<2) return [{type:'Resultado',content:txt.trim()}];
-  return parts.map(p=>{
-    const lines=p.trim().split('\n');
-    const type=lines.shift().replace(/===/g,'').trim();
-    const content=lines.join('\n').replace(/POTENCIAL:.*$/im,'').trim();
-    return {type,content};
-  });
-}
-function renderResult(blocks){
-  document.getElementById('wCards').innerHTML=blocks.map(b=>`
-    <div class="out-block">
-      <div class="out-type">${esc(b.type)}</div>
-      <div class="out-text">${esc(b.content)}</div>
-    </div>`).join('');
-  document.getElementById('wResult').style.display='block';
-}
-
-function renderWsHistory(){
-  const p=cp();if(!p)return;
-  const box=document.getElementById('wsHistoryList');
-  const items=app.history.filter(h=>h.profileId===p.id).slice().reverse();
-  if(!items.length){box.innerHTML='<div class="empty"><b>Sin historial</b><p>Genera contenido para verlo aquí.</p></div>';return}
-  box.innerHTML=items.map(it=>`
-    <div class="hist-item" id="hi-${it.id}">
-      <b>${esc(it.topic)}</b>
-      <div class="hist-meta">
-        <span class="tag">${esc(it.tone||'-')}</span>
-        <span>${fmtDate(it.date)}</span>
-        <span>${esc((it.platforms||[]).join(', '))}</span>
-      </div>
-      <div class="hist-body" id="hb-${it.id}">${(it.blocks||[]).map(b=>`<div style="margin-bottom:10px"><div class="out-type">${esc(b.type)}</div><div class="out-text" style="font-size:12px">${esc(b.content)}</div></div>`).join('')}</div>
-      <div class="hist-actions">
-        <button class="btn btn-soft" data-view="${it.id}">Ver</button>
-        <button class="btn btn-soft" data-use="${it.id}">Usar</button>
-        <button class="btn btn-soft" data-edit="${it.id}">Editar tema</button>
-        <button class="btn btn-danger" data-hdel="${it.id}">Borrar</button>
-      </div>
-    </div>`).join('');
-  box.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const id=b.dataset.view;const el=document.getElementById('hb-'+id);el.classList.toggle('open');b.textContent=el.classList.contains('open')?'Ocultar':'Ver'});
-  box.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.use);if(!it)return;document.getElementById('wTopic').value=it.topic||'';document.getElementById('wContext').value=it.context||'';document.getElementById('wTone').value=it.tone||'Energético y motivador';mkChips('wPlatforms',PLATFORMS,it.platforms||[]);mkChips('wTypes',TYPES,it.types||[]);switchWsTab('wt-gen');toast('Cargado al generador')});
-  box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.edit);if(!it)return;const t=prompt('Editar tema:',it.topic||'');if(t===null)return;it.topic=t.trim()||it.topic;save();renderWsHistory()});
-  box.querySelectorAll('[data-hdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta generación?'))return;app.history=app.history.filter(x=>x.id!==b.dataset.hdel);save();renderWsHistory()});
-}
-
-function renderWsMemory(){
-  const p=cp();if(!p)return;
-  const box=document.getElementById('wsMemoryList');
-  const items=app.memories.filter(m=>m.profileId===p.id).slice().reverse();
-  if(!items.length){box.innerHTML='<div class="empty"><b>Sin memoria</b><p>Agrega notas o se crean automáticamente al generar.</p></div>';return}
-  box.innerHTML=items.map(m=>`
-    <div class="hist-item">
-      <b>${esc(m.title)}</b>
-      <div class="hist-meta"><span>${fmtDate(m.date)}</span></div>
-      <p style="font-size:12px;color:var(--muted);line-height:1.6">${esc(m.content.slice(0,280))}</p>
-      <div class="hist-actions" style="margin-top:8px"><button class="btn btn-danger" data-mdel="${m.id}">Borrar</button></div>
-    </div>`).join('');
-  box.querySelectorAll('[data-mdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta memoria?'))return;app.memories=app.memories.filter(x=>x.id!==b.dataset.mdel);save();renderWsMemory()});
-}
-
-function renderHomeRecent(){
-  const recent=app.history.slice(-3).reverse();
-  const sec=document.getElementById('homeRecentSection');
-  const box=document.getElementById('homeRecent');
-  if(!recent.length){sec.style.display='none';return}
-  sec.style.display='block';
-  box.innerHTML=recent.map(it=>`<div class="hist-item"><b>${esc(it.profileName)} · ${esc(it.topic)}</b><div class="hist-meta"><span>${fmtDate(it.date)}</span></div></div>`).join('');
-}
-
-function renderSettings(){
-  document.getElementById('apiKey').value=app.key||'';
-  document.getElementById('modelSel').value=app.model||'gemini-2.5-flash';
-  document.getElementById('themeSel').value=app.theme||'neon';
-}
-function saveSettings(){
-  app.key=document.getElementById('apiKey').value.trim();
-  app.model=document.getElementById('modelSel').value;
-  app.theme=document.getElementById('themeSel').value;
   applyTheme(app.theme);
   save();
   syncThemeSelect();
   toast('Ajustes guardados');
 }
+function renderSettings() {
+  document.getElementById('apiKey').value = app.key || '';
+  document.getElementById('providerSel').value = app.provider;
+  updateModelSelect();
+  document.getElementById('modelSel').value = app.model;
+  updateApiHelp();
+  document.getElementById('themeSel').value = app.theme;
+}
 
-function registerSW(){
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/MXNDO.github-io/sw.js').then(reg=>console.log('SW registrado',reg)).catch(err=>console.warn('Error SW',err));
+// ==================== SERVICE WORKER ====================
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/MXNDO.github-io/sw.js').then(reg => console.log('SW registrado', reg)).catch(err => console.warn('Error SW', err));
   }
 }
 
-function regenerate() {
-  if (!lastGenParams) {
-    toast('No hay generación previa para regenerar');
-    return;
-  }
-  document.getElementById('wTopic').value = lastGenParams.topic;
-  document.getElementById('wTone').value = lastGenParams.tone;
-  document.getElementById('wContext').value = lastGenParams.context || '';
-  document.getElementById('wMemMode').value = lastGenParams.memMode || 'last3';
-  mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
-  mkChips('wTypes', TYPES, lastGenParams.types);
-  generate();
-}
-
-function init(){
+// ==================== INICIALIZACIÓN ====================
+function init() {
   load();
-  applyTheme(app.theme||'neon');
+  if (!app.provider) app.provider = 'gemini';
+  if (!app.model) app.model = PROVIDERS[app.provider]?.defaultModel || 'gemini-2.5-flash';
+  applyTheme(app.theme || 'neon');
   syncThemeSelect();
-  const lastId=sessionStorage.getItem('lastProfileId');
-  if(lastId && app.profiles.some(p=>p.id===lastId)){
+  const lastId = sessionStorage.getItem('lastProfileId');
+  if (lastId && app.profiles.some(p => p.id === lastId)) {
     openWorkspace(lastId);
     navStack = ['s-home', 's-profiles', 's-workspace'];
-  }else{
+  } else {
     navStack = ['s-home'];
     history.replaceState({screen:'s-home'}, '');
   }
-  document.querySelectorAll('.bn').forEach(b=>b.onclick=()=>{
-    const screenId = b.dataset.screen;
-    showScreen(screenId);
-    if(screenId==='s-profiles') renderProfiles();
-    if(screenId==='s-home') renderHomeRecent();
-    if(screenId==='s-settings') renderSettings();
+  // Eventos bottom nav
+  document.querySelectorAll('.bn').forEach(b => b.onclick = () => {
+    const id = b.dataset.screen;
+    showScreen(id);
+    if (id === 's-profiles') renderProfiles();
+    if (id === 's-home') renderHomeRecent();
+    if (id === 's-settings') renderSettings();
   });
-  document.getElementById('modeBtn').onclick=toggleMode;
-  document.getElementById('cycleBtn').onclick=cycleTheme;
-  document.getElementById('homeGoProfilesBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('homeTourBtn').onclick=()=>alert('TOUR:\n1. Ir a Perfiles → Crear un perfil.\n2. Abrir el perfil tocando "Abrir".\n3. En la pestaña ⚡ Generar: escribe un tema y pulsa Generar.\n4. En 🗂 Historial: ver, usar o editar lo generado.\n5. En 🧠 Memoria: notas del canal.\n6. Cambiar tema: botón ✦ arriba o en Ajustes.');
-  document.getElementById('newProfileBtn').onclick=openNewProfile;
-  document.getElementById('saveProfileBtn').onclick=saveProfile;
-  document.getElementById('cancelProfileBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('backFromFormBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('backFromWsBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('wsEditProfileBtn').onclick=()=>{if(currentProfileId) editProfile(currentProfileId)};
-  document.querySelectorAll('.ws-tab-btn').forEach(b=>b.onclick=()=>switchWsTab(b.dataset.tab));
-  document.getElementById('wGenBtn').onclick=generate;
-  document.getElementById('wClearBtn').onclick=()=>{
-    document.getElementById('wTopic').value='';
-    document.getElementById('wContext').value='';
-    mkChips('wPlatforms',PLATFORMS,['TikTok']);
-    mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
-    document.getElementById('wResult').style.display='none';
+  document.getElementById('modeBtn').onclick = toggleMode;
+  document.getElementById('cycleBtn').onclick = cycleTheme;
+  document.getElementById('homeGoProfilesBtn').onclick = () => showScreen('s-profiles');
+  document.getElementById('homeTourBtn').onclick = () => alert('TOUR:\n1. Ir a Perfiles → Crear un perfil.\n2. Abrir el perfil tocando "Abrir".\n3. Generar contenido.\n4. Historial y memoria.\n5. Cambiar tema o proveedor IA en Ajustes.');
+  document.getElementById('newProfileBtn').onclick = openNewProfile;
+  document.getElementById('saveProfileBtn').onclick = saveProfile;
+  document.getElementById('cancelProfileBtn').onclick = () => showScreen('s-profiles');
+  document.getElementById('backFromFormBtn').onclick = () => showScreen('s-profiles');
+  document.getElementById('backFromWsBtn').onclick = () => showScreen('s-profiles');
+  document.getElementById('wsEditProfileBtn').onclick = () => { if (currentProfileId) editProfile(currentProfileId); };
+  document.querySelectorAll('.ws-tab-btn').forEach(b => b.onclick = () => switchWsTab(b.dataset.tab));
+  document.getElementById('wGenBtn').onclick = generate;
+  document.getElementById('wClearBtn').onclick = () => {
+    document.getElementById('wTopic').value = '';
+    document.getElementById('wContext').value = '';
+    mkChips('wPlatforms', PLATFORMS, ['TikTok']);
+    mkChips('wTypes', TYPES, ['Guión completo','Ideas de contenido']);
+    document.getElementById('wResult').style.display = 'none';
     toast('Limpio');
   };
-  document.getElementById('wCopyBtn').onclick=()=>{
-    if(!lastDraftRaw) return;
-    navigator.clipboard.writeText(lastDraftRaw).then(()=>toast('Copiado al portapapeles')).catch(()=>toast('Error al copiar'));
+  document.getElementById('wCopyBtn').onclick = () => { if (lastDraftRaw) navigator.clipboard.writeText(lastDraftRaw).then(() => toast('Copiado')).catch(() => toast('Error al copiar')); };
+  document.getElementById('wRegenerateBtn').onclick = regenerate;
+  document.getElementById('suggestLocalBtn').onclick = suggestLocalTopic;
+  document.getElementById('suggestIABtn').onclick = suggestIATopic;
+  document.getElementById('addMemBtn').onclick = () => {
+    const p = cp(); if (!p) return;
+    const title = document.getElementById('memTitle').value.trim();
+    const content = document.getElementById('memContent').value.trim();
+    if (!title || !content) return toast('Escribe título y contenido');
+    app.memories.push({ id: uid(), profileId: p.id, title, content, date: new Date().toISOString() });
+    document.getElementById('memTitle').value = '';
+    document.getElementById('memContent').value = '';
+    save(); renderWsMemory(); toast('Memoria guardada');
   };
-  document.getElementById('wRegenerateBtn').onclick=regenerate;
-  document.getElementById('suggestLocalBtn').onclick=suggestLocalTopic;
-  document.getElementById('suggestIABtn').onclick=suggestIATopic;
-  document.getElementById('addMemBtn').onclick=()=>{
-    const p=cp(); if(!p) return;
-    const title=document.getElementById('memTitle').value.trim();
-    const content=document.getElementById('memContent').value.trim();
-    if(!title||!content) return toast('Escribe título y contenido');
-    app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString()});
-    document.getElementById('memTitle').value='';
-    document.getElementById('memContent').value='';
-    save();
-    renderWsMemory();
-    toast('Memoria guardada');
+  document.getElementById('saveSettingsBtn').onclick = saveSettings;
+  document.getElementById('detectProviderBtn').onclick = () => {
+    const key = document.getElementById('apiKey').value.trim();
+    if (!key) { toast('Ingresa una API key primero'); return; }
+    const detected = detectProvider(key);
+    document.getElementById('providerSel').value = detected;
+    updateModelSelect();
+    const defaultMod = PROVIDERS[detected].defaultModel;
+    if (defaultMod) document.getElementById('modelSel').value = defaultMod;
+    toast(`Proveedor detectado: ${PROVIDERS[detected].name}`);
   };
-  document.getElementById('saveSettingsBtn').onclick=saveSettings;
-  document.getElementById('themeSel').onchange=()=>{
-    app.theme=document.getElementById('themeSel').value;
-    applyTheme(app.theme);
-    save();
+  document.getElementById('providerSel').onchange = () => {
+    updateModelSelect();
+    updateApiHelp();
+    const newProvider = document.getElementById('providerSel').value;
+    const defaultMod = PROVIDERS[newProvider].defaultModel;
+    if (defaultMod && !PROVIDERS[newProvider].models.includes(app.model)) {
+      document.getElementById('modelSel').value = defaultMod;
+    }
   };
-  mkChips('wPlatforms',PLATFORMS,['TikTok']);
-  mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
+  document.getElementById('themeSel').onchange = () => { app.theme = document.getElementById('themeSel').value; applyTheme(app.theme); save(); };
+  mkChips('wPlatforms', PLATFORMS, ['TikTok']);
+  mkChips('wTypes', TYPES, ['Guión completo','Ideas de contenido']);
   renderProfiles();
   renderHomeRecent();
   renderSettings();
