@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NeonAI">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<title>NEON CREATOR AI - Potencial refinado y memoria automática</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>NEON CREATOR AI - Modelos Gemini 3.x y 2.5</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ========== MISMO CSS QUE EN EL PASO 2 (no cambios) ========== */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#05030d;--bg2:#09051a;--panel:#110a24;
@@ -108,7 +107,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
   <button class="ico-btn" id="cycleBtn" title="Cambiar tema">✦</button>
 </div>
 
-<!-- HOME -->
+<!-- ==================== PANTALLA DE INICIO ==================== -->
 <div class="screen active" id="s-home">
 <div class="screen-inner">
   <div style="margin-bottom:18px">
@@ -134,8 +133,9 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     <p style="font-size:13px;line-height:1.8">
       1. <b>Crea un perfil</b> desde la pestaña Perfiles.<br>
       2. <b>Abre el perfil</b> tocando su tarjeta.<br>
-      3. <b>Genera contenido</b> dentro de ese perfil.<br>
-      4. <b>Revisa, edita y reutiliza</b> el historial.
+      3. <b>Selecciona la plataforma principal</b> y los tipos de contenido.<br>
+      4. <b>Genera contenido optimizado</b> con IA.<br>
+      5. <b>Revisa el historial</b> con puntaje de impacto y ordena por fecha o puntuación.
     </p>
     <div class="actions">
       <button class="btn btn-primary" id="homeGoProfilesBtn">Ir a Perfiles</button>
@@ -149,7 +149,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- PROFILES LIST -->
+<!-- ==================== PANTALLA DE PERFILES ==================== -->
 <div class="screen" id="s-profiles">
 <div class="screen-inner">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -161,20 +161,26 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- PROFILE FORM -->
+<!-- ==================== FORMULARIO DE PERFIL (MEJORADO) ==================== -->
 <div class="screen" id="s-profile-form">
 <div class="screen-inner">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
-    <button class="btn btn-soft btn-icon" id="backFromFormBtn">←</button>
-    <div style="font-family:var(--display);font-size:18px" id="formTitle">Nuevo perfil</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="btn btn-soft btn-icon" id="backFromFormBtn">←</button>
+      <div style="font-family:var(--display);font-size:18px" id="formTitle">Nuevo perfil</div>
+    </div>
+    <button class="btn btn-primary" id="optimizeProfileBtn" style="font-size:12px; padding:6px 12px;">✨ Optimizar con IA</button>
   </div>
-  <div class="fg"><label>Nombre del perfil *</label><input id="pfName" placeholder="Ej: Cyber BloodStrike"/></div>
-  <div class="fg"><label>Nicho</label><input id="pfNiche" placeholder="Ej: Shooter mobile"/></div>
-  <div class="fg"><label>Audiencia objetivo</label><input id="pfAudience" placeholder="Ej: jugadores competitivos LATAM"/></div>
-  <div class="fg"><label>Tono base del canal</label><input id="pfTone" placeholder="Ej: agresivo, técnico y directo"/></div>
+  <div class="fg"><label>Nombre del perfil *</label><input id="pfName" placeholder="Ej: Cyber BloodStrike"></div>
+  <div class="fg"><label>Nicho</label><input id="pfNiche" placeholder="Ej: Shooter mobile"></div>
+  <div class="fg"><label>Audiencia objetivo</label><input id="pfAudience" placeholder="Ej: jugadores competitivos LATAM"></div>
+  <div class="fg"><label>Tono base del canal</label><input id="pfTone" placeholder="Ej: agresivo, técnico y directo"></div>
   <div class="fg"><label>Descripción / voz del canal</label><textarea id="pfDesc" placeholder="Estilo, reglas, palabras a usar o evitar..."></textarea></div>
-  <div class="fg"><label>CTA principal</label><input id="pfCta" placeholder="Ej: sígueme para más settings"/></div>
-  <input type="hidden" id="pfEditId"/>
+  <div class="fg"><label>CTA principal</label><input id="pfCta" placeholder="Ej: sígueme para más settings"></div>
+  <div class="fg"><label>Palabras clave (separadas por comas)</label><input id="pfKeywords" placeholder="Ej: sensibilidad, aim, settings, competitivo"></div>
+  <div class="fg"><label>Objetivo principal del canal</label><input id="pfGoal" placeholder="Ej: educar a jugadores intermedios a mejorar su puntería"></div>
+  <div class="fg"><label>Temas a evitar</label><input id="pfAvoid" placeholder="Ej: política, spoilers, polémicas"></div>
+  <input type="hidden" id="pfEditId">
   <div class="actions">
     <button class="btn btn-primary" id="saveProfileBtn">Guardar perfil</button>
     <button class="btn btn-soft" id="cancelProfileBtn">Cancelar</button>
@@ -182,7 +188,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- WORKSPACE -->
+<!-- ==================== WORKSPACE ==================== -->
 <div class="screen" id="s-workspace">
 <div class="screen-inner">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
@@ -192,22 +198,19 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
       <div style="font-family:var(--display);font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="wsName">Perfil</div>
       <div style="font-size:11px;color:var(--muted)" id="wsNiche">Nicho</div>
     </div>
-    <button class="btn btn-soft" id="wsEditProfileBtn" style="flex-shrink:0">Editar</button>
+    <button class="btn btn-soft" id="wsEditProfileBtn">Editar</button>
   </div>
-
   <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px" id="wsTabs">
     <button class="btn btn-primary ws-tab-btn" data-tab="wt-gen">⚡ Generar</button>
     <button class="btn btn-soft ws-tab-btn" data-tab="wt-history">🗂 Historial</button>
     <button class="btn btn-soft ws-tab-btn" data-tab="wt-memory">🧠 Memoria</button>
   </div>
-
-  <!-- TAB: Generar -->
   <div class="ws-tab active" id="wt-gen">
     <div class="fg"><label>Tema o idea central *</label>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
         <input id="wTopic" placeholder="Ej: Mejorar sensibilidad con IA" style="flex:1; min-width:120px">
-        <button class="btn btn-soft" id="suggestLocalBtn" title="Sugerencia local">🎲 Local</button>
-        <button class="btn btn-soft" id="suggestIABtn" title="Sugerencia con IA">✨ IA sugerir</button>
+        <button class="btn btn-soft" id="suggestLocalBtn">🎲 Local</button>
+        <button class="btn btn-soft" id="suggestIABtn">✨ IA sugerir</button>
       </div>
     </div>
     <div class="fg"><label>Tono</label>
@@ -220,20 +223,18 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
         <option>Provocador e impactante</option>
       </select>
     </div>
-
     <div class="fg">
       <label>Plataforma principal</label>
       <select id="mainPlatform">
         <option value="TikTok">TikTok</option>
         <option value="YouTube">YouTube</option>
         <option value="Instagram Reels">Instagram Reels</option>
-        <option value="Shorts">YouTube Shorts</option>
+        <option value="Shorts">Shorts</option>
         <option value="Twitter/X">Twitter/X</option>
         <option value="Facebook">Facebook</option>
         <option value="LinkedIn">LinkedIn</option>
       </select>
     </div>
-
     <div class="fg"><label>Plataformas secundarias</label><div class="chips" id="wPlatforms"></div></div>
     <div class="fg"><label>¿Qué generar?</label><div class="chips" id="wTypes"></div></div>
     <div class="fg"><label>Contexto adicional (opcional)</label><textarea id="wContext" placeholder="Detalles extra, palabras clave, cosas a evitar..."></textarea></div>
@@ -259,17 +260,20 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
       <div id="wCards"></div>
     </div>
   </div>
-
-  <!-- TAB: Historial -->
   <div class="ws-tab" id="wt-history" style="display:none">
     <div class="sec-title">Historial del perfil</div>
+    <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+      <select id="historySortSelect" style="width:auto; padding:6px 10px; font-size:12px;">
+        <option value="date-desc">📅 Más reciente primero</option>
+        <option value="date-asc">📅 Más antiguo primero</option>
+        <option value="score-desc">🏆 Mejor puntaje primero</option>
+      </select>
+    </div>
     <div id="wsHistoryList"></div>
   </div>
-
-  <!-- TAB: Memoria -->
   <div class="ws-tab" id="wt-memory" style="display:none">
     <div class="sec-title">Memoria del perfil</div>
-    <div class="fg"><label>Agregar nota de memoria</label><input id="memTitle" placeholder="Título de la nota"/></div>
+    <div class="fg"><label>Agregar nota de memoria</label><input id="memTitle" placeholder="Título de la nota"></div>
     <div class="fg"><textarea id="memContent" placeholder="Contenido de la nota..." style="min-height:70px"></textarea></div>
     <div class="actions"><button class="btn btn-primary" id="addMemBtn">+ Agregar</button></div>
     <div style="height:14px"></div>
@@ -278,21 +282,24 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 </div>
 </div>
 
-<!-- SETTINGS -->
+<!-- ==================== AJUSTES (MODELOS ACTUALIZADOS) ==================== -->
 <div class="screen" id="s-settings">
 <div class="screen-inner">
   <div style="font-family:var(--display);font-size:20px;margin-bottom:18px">Ajustes</div>
-  <div class="fg"><label>Google Gemini API Key</label><input id="apiKey" type="password" placeholder="AIza..."/></div>
-  <div class="fg"><label>Modelo</label>
+  <div class="fg"><label>Google Gemini API Key</label><input id="apiKey" type="password" placeholder="AIza..."></div>
+  <div class="fg"><label>Modelo de generación de contenido</label>
     <select id="modelSel">
-      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-      <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
-      <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+      <option value="gemini-3.5-flash">⚡ Gemini 3.5 Flash (Preview) - Rápido e inteligente, recomendado</option>
+      <option value="gemini-3-flash">💰 Gemini 3 Flash - Económico y rápido</option>
+      <option value="gemini-3.1-pro-preview">🧠 Gemini 3.1 Pro (Preview) - Máximo razonamiento</option>
+      <option value="gemini-2.5-flash">⚙️ Gemini 2.5 Flash - Equilibrio creatividad/velocidad</option>
+      <option value="gemini-2.5-pro">🔬 Gemini 2.5 Pro - Potente pero más lento</option>
     </select>
+    <div style="font-size:11px; color:var(--muted); margin-top:5px">La optimización de perfiles usa internamente Gemini 2.5 Flash-Lite (más económico y preciso para esa tarea).</div>
   </div>
   <div class="fg"><label>Tema visual</label>
     <select id="themeSel">
-      <option value="neon">🌑 Neon Red (predeterminado)</option>
+      <option value="neon">🌑 Neon Red</option>
       <option value="ice">🧊 Ice Cyber</option>
       <option value="violet">💜 Violet Pulse</option>
       <option value="amber">🟠 Amber Grid</option>
@@ -308,7 +315,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
   </div>
   <div class="divider"></div>
   <div class="sec-title">Acerca de</div>
-  <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v1.6<br>Generador de contenido con IA Gemini.<br>Cada perfil tiene su propio generador, historial y memoria.</p>
+  <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v3.0<br>Modelos compatibles: Gemini 3.5 Flash, 3 Flash, 3.1 Pro, 2.5 Flash, 2.5 Pro.<br>Optimización de perfiles con Gemini 2.5 Flash-Lite.</p>
 </div>
 </div>
 
@@ -319,7 +326,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
   <div class="bn" data-screen="s-settings"><div class="icon">⚙️</div>Ajustes</div>
 </div>
 
-<!-- LOADING & MODAL -->
+<!-- LOADING OVERLAY Y MODAL -->
 <div class="loading-overlay" id="loader"><div class="spinner"></div></div>
 <div id="iaWarningModal" class="modal-overlay">
   <div class="modal">
@@ -331,12 +338,11 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 
 <script>
 // ==================== CONSTANTES ====================
-const KEY='neon_ai_v6';
+const KEY='neon_ai_v3';
 const THEMES=['neon','ice','violet','amber','cyberRed','green','pink','dark','light'];
 const PLATFORMS=['TikTok','YouTube','Reels','Shorts','Twitter/X','Facebook'];
 const TYPES=['Guión completo','Ganchos (hooks)','Títulos optimizados','Ideas de contenido','Descripción y hashtags','CTA'];
 
-// GUÍA DE PLATAFORMAS
 const platformGuide = {
   'TikTok': 'Para TikTok: genera un guion para video vertical de 15-30 segundos. Hook potente en los primeros 2 segundos. Texto en pantalla dinámico. Usa tendencias de sonido o efectos virales. Hashtags: 3-5 relevantes.',
   'YouTube': 'Para YouTube: genera un guion para video horizontal de 5-10 minutos. Estructura: intro gancho (0:00-0:30), desarrollo con 3 puntos clave, ejemplos prácticos, conclusión y CTA (suscribirse/comentar). Título sugerido al inicio.',
@@ -347,7 +353,6 @@ const platformGuide = {
   'LinkedIn': 'Para LinkedIn: contenido profesional, tono formal pero cercano. Estructura: gancho con pregunta o dato, desarrollo con consejos prácticos, cierre con reflexión y CTA (compartir opinión). Hashtags: 2-3 del sector.'
 };
 
-// LISTA LOCAL DE TEMAS
 const LOCAL_TOPICS = [
   "5 errores que cometen los principiantes y cómo evitarlos",
   "Herramientas gratuitas que todo creador debería conocer",
@@ -391,124 +396,223 @@ const LOCAL_TOPICS = [
   "Cómo conseguir tus primeros 1000 seguidores"
 ];
 
-let app={key:'',model:'gemini-2.5-flash',theme:'neon',profiles:[],history:[],memories:[]};
+let app={key:'',model:'gemini-3.5-flash',theme:'neon',profiles:[],history:[],memories:[]};
 let currentProfileId=null;
 let lastDraftRaw='';
 let lastGenParams=null;
 let navStack=[];
 let isGenerating=false;
 let iaWarningAccepted=false;
+let currentHistorySort='date-desc';
 
 // ==================== FUNCIONES AUXILIARES ====================
 function save(){localStorage.setItem(KEY,JSON.stringify(app))}
-function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)};if(!app.model)app.model='gemini-2.5-flash'}catch(e){}}
+function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)};if(!app.model)app.model='gemini-3.5-flash'}catch(e){}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function esc(s=''){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
 function fmtDate(d){const t=(Date.now()-new Date(d))/1e3;if(t<60)return'ahora';if(t<3600)return Math.floor(t/60)+'m';if(t<86400)return Math.floor(t/3600)+'h';return new Date(d).toLocaleDateString('es-MX',{day:'numeric',month:'short'})}
 function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),1800)}
 function loader(on){document.getElementById('loader').classList.toggle('show',on)}
 function cp(){return app.profiles.find(p=>p.id===currentProfileId)}
 function initials(name){return(name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
 function applyTheme(t){document.body.dataset.theme=t||'neon'}
-function syncThemeSelect(){const sel=document.getElementById('themeSel');if(sel)sel.value=app.theme;}
-function cycleTheme(){const i=THEMES.indexOf(app.theme||'neon');app.theme=THEMES[(i+1)%THEMES.length];applyTheme(app.theme);syncThemeSelect();save();toast('Tema: '+app.theme);}
-function toggleMode(){app.theme=(app.theme==='light'?'dark':'light');applyTheme(app.theme);syncThemeSelect();save();toast('Modo: '+app.theme);}
+function syncThemeSelect(){const sel=document.getElementById('themeSel');if(sel)sel.value=app.theme}
+function cycleTheme(){const i=THEMES.indexOf(app.theme||'neon');app.theme=THEMES[(i+1)%THEMES.length];applyTheme(app.theme);syncThemeSelect();save();toast('Tema: '+app.theme)}
+function toggleMode(){app.theme=(app.theme==='light'?'dark':'light');applyTheme(app.theme);syncThemeSelect();save();toast('Modo: '+app.theme)}
 
-// Navegación con historial
-function showScreen(id, addToHistory=true){
+function showScreen(id,addToHistory=true){
   const cur=document.querySelector('.screen.active')?.id;
   if(cur===id) return;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));
   window.scrollTo(0,0);
-  if(addToHistory && navStack[navStack.length-1]!==id){
-    navStack.push(id);
-    history.pushState({screen:id},'', '');
-  }
+  if(addToHistory && navStack[navStack.length-1]!==id){navStack.push(id);history.pushState({screen:id},'', '')}
 }
-window.addEventListener('popstate',()=>{
-  if(navStack.length>1){
-    navStack.pop();
-    showScreen(navStack[navStack.length-1], false);
-  }
-});
+window.addEventListener('popstate',()=>{if(navStack.length>1){navStack.pop();showScreen(navStack[navStack.length-1],false)}});
 
 function mkChips(id,items,defaults){
-  const box=document.getElementById(id); box.innerHTML='';
-  items.forEach(x=>{
-    const c=document.createElement('button');
-    c.className='chip'+(defaults.includes(x)?' on':'');
-    c.type='button';
-    c.textContent=x;
-    c.onclick=()=>c.classList.toggle('on');
-    box.appendChild(c);
-  });
+  const box=document.getElementById(id);box.innerHTML='';
+  items.forEach(x=>{const c=document.createElement('button');c.className='chip'+(defaults.includes(x)?' on':'');c.type='button';c.textContent=x;c.onclick=()=>c.classList.toggle('on');box.appendChild(c)});
 }
 function getChips(id){return[...document.querySelectorAll('#'+id+' .chip.on')].map(c=>c.textContent)}
 
 // ==================== PERFILES ====================
 function renderProfiles(){
-  const list=document.getElementById('profilesList'), none=document.getElementById('noProfiles');
+  const list=document.getElementById('profilesList'),none=document.getElementById('noProfiles');
   if(!app.profiles.length){list.innerHTML='';none.style.display='block';return}
   none.style.display='none';
-  list.innerHTML=app.profiles.map(p=>{
-    const hc=app.history.filter(h=>h.profileId===p.id).length;
-    return`<div class="profile-item" id="pi-${p.id}"><div class="avatar">${initials(p.name)}</div><div class="profile-info"><b>${esc(p.name)}</b><span>${esc(p.niche||'Sin nicho')} · ${hc} generaciones</span></div><div class="profile-actions"><button class="btn btn-soft btn-icon" title="Editar" data-edit="${p.id}">✎</button><button class="btn btn-danger btn-icon" title="Borrar" data-del="${p.id}">✕</button><button class="btn btn-primary" data-open="${p.id}">Abrir</button></div></div>`;
-  }).join('');
-  list.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openWorkspace(b.dataset.open));
-  list.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProfile(b.dataset.edit));
-  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();delProfile(b.dataset.del)});
+  list.innerHTML=app.profiles.map(p=>`<div class="profile-item"><div class="avatar">${initials(p.name)}</div><div class="profile-info"><b>${esc(p.name)}</b><span>${esc(p.niche||'Sin nicho')} · ${app.history.filter(h=>h.profileId===p.id).length} generaciones</span></div><div class="profile-actions"><button class="btn btn-soft btn-icon" data-edit="${p.id}">✎</button><button class="btn btn-danger btn-icon" data-del="${p.id}">✕</button><button class="btn btn-primary" data-open="${p.id}">Abrir</button></div></div>`).join('');
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openWorkspace(b.dataset.open));
+  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProfile(b.dataset.edit));
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();delProfile(b.dataset.del)});
 }
-function openNewProfile(){document.getElementById('pfEditId').value='';document.getElementById('formTitle').textContent='Nuevo perfil';['pfName','pfNiche','pfAudience','pfTone','pfDesc','pfCta'].forEach(id=>document.getElementById(id).value='');showScreen('s-profile-form');}
-function editProfile(id){const p=app.profiles.find(x=>x.id===id);if(!p)return;document.getElementById('pfEditId').value=id;document.getElementById('formTitle').textContent='Editar perfil';document.getElementById('pfName').value=p.name||'';document.getElementById('pfNiche').value=p.niche||'';document.getElementById('pfAudience').value=p.audience||'';document.getElementById('pfTone').value=p.tone||'';document.getElementById('pfDesc').value=p.description||'';document.getElementById('pfCta').value=p.cta||'';showScreen('s-profile-form');}
-function saveProfile(){const name=document.getElementById('pfName').value.trim();if(!name)return toast('Ponle nombre al perfil');const data={name,niche:document.getElementById('pfNiche').value.trim(),audience:document.getElementById('pfAudience').value.trim(),tone:document.getElementById('pfTone').value.trim(),description:document.getElementById('pfDesc').value.trim(),cta:document.getElementById('pfCta').value.trim()};const editId=document.getElementById('pfEditId').value;if(editId){Object.assign(app.profiles.find(x=>x.id===editId),data);toast('Perfil actualizado');save();if(currentProfileId===editId)loadWorkspaceHeader();}else{app.profiles.push({id:uid(),...data});toast('Perfil creado');save();}renderProfiles();showScreen('s-profiles');}
-function delProfile(id){if(!confirm(`¿Borrar el perfil "${app.profiles.find(p=>p.id===id)?.name}" y todo su historial?`))return;app.profiles=app.profiles.filter(x=>x.id!==id);app.history=app.history.filter(x=>x.profileId!==id);app.memories=app.memories.filter(x=>x.profileId!==id);if(currentProfileId===id){currentProfileId=null;sessionStorage.removeItem('lastProfileId');}save();renderProfiles();toast('Perfil borrado');}
-function openWorkspace(id){currentProfileId=id;sessionStorage.setItem('lastProfileId',id);loadWorkspaceHeader();switchWsTab('wt-gen');mkChips('wPlatforms',PLATFORMS,['TikTok']);mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);document.getElementById('wTopic').value='';document.getElementById('wContext').value='';document.getElementById('wResult').style.display='none';showScreen('s-workspace');}
-function loadWorkspaceHeader(){const p=cp();if(!p)return;document.getElementById('wsAvatar').textContent=initials(p.name);document.getElementById('wsName').textContent=p.name;document.getElementById('wsNiche').textContent=p.niche||'Sin nicho';document.getElementById('wTone').value=p.tone||'Energético y motivador';}
-function switchWsTab(tabId){document.querySelectorAll('.ws-tab').forEach(t=>t.style.display='none');document.getElementById(tabId).style.display='block';document.querySelectorAll('.ws-tab-btn').forEach(b=>{const on=b.dataset.tab===tabId;b.className='btn '+(on?'btn-primary':'btn-soft')+' ws-tab-btn';});if(tabId==='wt-history')renderWsHistory();if(tabId==='wt-memory')renderWsMemory();}
+function openNewProfile(){
+  document.getElementById('pfEditId').value='';
+  document.getElementById('formTitle').textContent='Nuevo perfil';
+  ['pfName','pfNiche','pfAudience','pfTone','pfDesc','pfCta','pfKeywords','pfGoal','pfAvoid'].forEach(id=>document.getElementById(id).value='');
+  showScreen('s-profile-form');
+}
+function editProfile(id){
+  const p=app.profiles.find(x=>x.id===id); if(!p) return;
+  document.getElementById('pfEditId').value=id;
+  document.getElementById('formTitle').textContent='Editar perfil';
+  document.getElementById('pfName').value=p.name||'';
+  document.getElementById('pfNiche').value=p.niche||'';
+  document.getElementById('pfAudience').value=p.audience||'';
+  document.getElementById('pfTone').value=p.tone||'';
+  document.getElementById('pfDesc').value=p.description||'';
+  document.getElementById('pfCta').value=p.cta||'';
+  document.getElementById('pfKeywords').value=p.keywords||'';
+  document.getElementById('pfGoal').value=p.goal||'';
+  document.getElementById('pfAvoid').value=p.avoid||'';
+  showScreen('s-profile-form');
+}
+function saveProfile(){
+  const name=document.getElementById('pfName').value.trim(); if(!name) return toast('Ponle nombre al perfil');
+  const data={
+    name,
+    niche:document.getElementById('pfNiche').value.trim(),
+    audience:document.getElementById('pfAudience').value.trim(),
+    tone:document.getElementById('pfTone').value.trim(),
+    description:document.getElementById('pfDesc').value.trim(),
+    cta:document.getElementById('pfCta').value.trim(),
+    keywords:document.getElementById('pfKeywords').value.trim(),
+    goal:document.getElementById('pfGoal').value.trim(),
+    avoid:document.getElementById('pfAvoid').value.trim()
+  };
+  const editId=document.getElementById('pfEditId').value;
+  if(editId){
+    const p=app.profiles.find(x=>x.id===editId); Object.assign(p,data);
+    toast('Perfil actualizado'); save();
+    if(currentProfileId===editId) loadWorkspaceHeader();
+  } else {
+    app.profiles.push({id:uid(),...data}); toast('Perfil creado'); save();
+  }
+  renderProfiles(); showScreen('s-profiles');
+}
+function delProfile(id){
+  if(!confirm(`¿Borrar el perfil "${app.profiles.find(p=>p.id===id)?.name}" y todo su historial?`)) return;
+  app.profiles=app.profiles.filter(x=>x.id!==id);
+  app.history=app.history.filter(x=>x.profileId!==id);
+  app.memories=app.memories.filter(x=>x.profileId!==id);
+  if(currentProfileId===id){currentProfileId=null;sessionStorage.removeItem('lastProfileId');}
+  save(); renderProfiles(); toast('Perfil borrado');
+}
+function openWorkspace(id){
+  currentProfileId=id;
+  sessionStorage.setItem('lastProfileId',id);
+  loadWorkspaceHeader();
+  switchWsTab('wt-gen');
+  mkChips('wPlatforms',PLATFORMS,['TikTok']);
+  mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
+  document.getElementById('wTopic').value='';
+  document.getElementById('wContext').value='';
+  document.getElementById('wResult').style.display='none';
+  showScreen('s-workspace');
+}
+function loadWorkspaceHeader(){
+  const p=cp(); if(!p) return;
+  document.getElementById('wsAvatar').textContent=initials(p.name);
+  document.getElementById('wsName').textContent=p.name;
+  document.getElementById('wsNiche').textContent=p.niche||'Sin nicho';
+  document.getElementById('wTone').value=p.tone||'Energético y motivador';
+}
+function switchWsTab(tabId){
+  document.querySelectorAll('.ws-tab').forEach(t=>t.style.display='none');
+  document.getElementById(tabId).style.display='block';
+  document.querySelectorAll('.ws-tab-btn').forEach(b=>{const on=b.dataset.tab===tabId;b.className='btn '+(on?'btn-primary':'btn-soft')+' ws-tab-btn'});
+  if(tabId==='wt-history') renderWsHistory();
+  if(tabId==='wt-memory') renderWsMemory();
+}
+
+// ==================== OPTIMIZAR PERFIL CON IA (FORZANDO GEMINI 2.5 FLASH LITE) ====================
+async function optimizeProfileWithAI(){
+  const name=document.getElementById('pfName').value.trim();
+  const niche=document.getElementById('pfNiche').value.trim();
+  if(!name && !niche){
+    toast('Escribe al menos el nombre o el nicho para poder optimizar');
+    return;
+  }
+  if(!app.key){ toast('Configura tu API Key de Gemini en Ajustes primero'); return; }
+  const btn=document.getElementById('optimizeProfileBtn');
+  const origText=btn.innerHTML;
+  btn.innerHTML='<span class="loader-mini"></span> Optimizando...';
+  btn.disabled=true;
+  try{
+    // FORZAR el modelo gemini-2.5-flash-lite para esta función
+    const modelForOptimization = 'gemini-2.5-flash-lite';
+    const prompt=`Eres un experto en marketing de contenidos. A partir del nombre y nicho de un perfil de redes sociales, sugiere valores para los siguientes campos. Responde ÚNICAMENTE en formato JSON válido, sin texto adicional, con las claves exactas: "audience", "tone", "description", "cta", "keywords", "goal", "avoid". 
+    Nombre: ${name || "no especificado"}
+    Nicho: ${niche || "general"}
+    Devuelve el JSON con valores coherentes y útiles. Si algún campo no aplica, pon una cadena vacía. Ejemplo de respuesta correcta: {"audience":"jugadores casuales","tone":"divertido y cercano","description":"Canal de trucos para juegos mobile","cta":"suscríbete para más","keywords":"trucos, juegos, móvil","goal":"educar y entretener","avoid":"política y religión"}`;
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelForOptimization}:generateContent?key=${app.key}`,{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.7, maxOutputTokens:500}})
+    });
+    if(!res.ok) throw new Error('Error en la API');
+    const data=await res.json();
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(!text) throw new Error('Respuesta vacía');
+    const jsonMatch=text.match(/\{[\s\S]*\}/);
+    if(!jsonMatch) throw new Error('No se encontró JSON en la respuesta');
+    const suggestions=JSON.parse(jsonMatch[0]);
+    if(suggestions.audience) document.getElementById('pfAudience').value=suggestions.audience;
+    if(suggestions.tone) document.getElementById('pfTone').value=suggestions.tone;
+    if(suggestions.description) document.getElementById('pfDesc').value=suggestions.description;
+    if(suggestions.cta) document.getElementById('pfCta').value=suggestions.cta;
+    if(suggestions.keywords) document.getElementById('pfKeywords').value=suggestions.keywords;
+    if(suggestions.goal) document.getElementById('pfGoal').value=suggestions.goal;
+    if(suggestions.avoid) document.getElementById('pfAvoid').value=suggestions.avoid;
+    toast('✅ Perfil optimizado con IA');
+  } catch(e){
+    console.error('Optimize error:', e);
+    toast('Error al optimizar: '+e.message);
+  } finally {
+    btn.innerHTML=origText;
+    btn.disabled=false;
+  }
+}
 
 // ==================== HISTORIAL Y MEMORIA ====================
 function renderWsHistory(){
   const p=cp(); if(!p) return;
+  let items = app.history.filter(h=>h.profileId===p.id);
+  const sortBy = document.getElementById('historySortSelect')?.value || currentHistorySort;
+  currentHistorySort=sortBy;
+  if(sortBy==='date-desc') items.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  else if(sortBy==='date-asc') items.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  else if(sortBy==='score-desc') items.sort((a,b)=>(b.score||0)-(a.score||0));
   const box=document.getElementById('wsHistoryList');
-  const items=app.history.filter(h=>h.profileId===p.id).slice().reverse();
   if(!items.length){box.innerHTML='<div class="empty"><b>Sin historial</b><p>Genera contenido para verlo aquí.</p></div>';return;}
-  box.innerHTML=items.map(it=>`
-    <div class="hist-item" id="hi-${it.id}">
-      <b>${esc(it.topic)}</b>
-      <div class="hist-meta">
-        <span class="tag">${esc(it.tone||'-')}</span>
-        <span>${fmtDate(it.date)}</span>
-        <span>${esc((it.secondaryPlatforms||[]).join(', '))}</span>
-      </div>
-      <div class="hist-body" id="hb-${it.id}">${(it.blocks||[]).map(b=>`<div><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('')}</div>
-      <div class="hist-actions">
-        <button class="btn btn-soft" data-view="${it.id}">Ver</button>
-        <button class="btn btn-soft" data-use="${it.id}">Usar</button>
-        <button class="btn btn-soft" data-edit="${it.id}">Editar tema</button>
-        <button class="btn btn-danger" data-hdel="${it.id}">Borrar</button>
-      </div>
-    </div>`).join('');
-  box.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const id=b.dataset.view;const el=document.getElementById('hb-'+id);el.classList.toggle('open');b.textContent=el.classList.contains('open')?'Ocultar':'Ver';});
-  box.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.use);if(!it)return;document.getElementById('wTopic').value=it.topic||'';document.getElementById('wContext').value=it.context||'';document.getElementById('wTone').value=it.tone||'Energético y motivador';document.getElementById('mainPlatform').value=it.mainPlatform||'TikTok';mkChips('wPlatforms',PLATFORMS,it.secondaryPlatforms||[]);mkChips('wTypes',TYPES,it.types||[]);switchWsTab('wt-gen');toast('Cargado al generador');});
-  box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.edit);if(!it)return;const t=prompt('Editar tema:',it.topic||'');if(t===null)return;it.topic=t.trim()||it.topic;save();renderWsHistory();});
-  box.querySelectorAll('[data-hdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta generación?'))return;app.history=app.history.filter(x=>x.id!==b.dataset.hdel);save();renderWsHistory();});
+  box.innerHTML=items.map(it=>{
+    const score=it.score!==undefined?it.score:null;
+    let scoreHtml='';
+    if(score!==null){
+      let color='#ff4d4d'; if(score>=70) color='#4caf50'; else if(score>=40) color='#ffc107';
+      scoreHtml=`<div style="display:flex;align-items:center;gap:8px;margin-top:6px"><span style="font-size:11px">🎯 Impacto:</span><div style="flex:1;height:6px;background:#333;border-radius:3px"><div style="width:${score}%;height:6px;background:${color};border-radius:3px"></div></div><span style="font-size:12px;font-weight:bold;color:${color}">${score}%</span></div>`;
+    }
+    return `<div class="hist-item"><b>${esc(it.topic)}</b><div class="hist-meta"><span class="tag">${esc(it.tone||'-')}</span><span>${fmtDate(it.date)}</span><span>${esc((it.secondaryPlatforms||[]).join(', '))}</span></div>${scoreHtml}<div class="hist-body" id="hb-${it.id}">${(it.blocks||[]).map(b=>`<div><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('')}</div><div class="hist-actions"><button class="btn btn-soft" data-view="${it.id}">Ver</button><button class="btn btn-soft" data-use="${it.id}">Usar</button><button class="btn btn-soft" data-edit="${it.id}">Editar tema</button><button class="btn btn-danger" data-hdel="${it.id}">Borrar</button></div></div>`;
+  }).join('');
+  document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const id=b.dataset.view;const el=document.getElementById('hb-'+id);el.classList.toggle('open');b.textContent=el.classList.contains('open')?'Ocultar':'Ver';});
+  document.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.use);if(!it)return;document.getElementById('wTopic').value=it.topic||'';document.getElementById('wContext').value=it.context||'';document.getElementById('wTone').value=it.tone||'Energético y motivador';document.getElementById('mainPlatform').value=it.mainPlatform||'TikTok';mkChips('wPlatforms',PLATFORMS,it.secondaryPlatforms||[]);mkChips('wTypes',TYPES,it.types||[]);switchWsTab('wt-gen');toast('Cargado al generador');});
+  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.edit);if(!it)return;const t=prompt('Editar tema:',it.topic||'');if(t===null)return;it.topic=t.trim()||it.topic;save();renderWsHistory();});
+  document.querySelectorAll('[data-hdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta generación?'))return;app.history=app.history.filter(x=>x.id!==b.dataset.hdel);save();renderWsHistory();});
 }
 function renderWsMemory(){
   const p=cp(); if(!p) return;
-  const box=document.getElementById('wsMemoryList');
   const items=app.memories.filter(m=>m.profileId===p.id).slice().reverse();
+  const box=document.getElementById('wsMemoryList');
   if(!items.length){box.innerHTML='<div class="empty"><b>Sin memoria</b><p>Agrega notas o se crean automáticamente al generar.</p></div>';return;}
   box.innerHTML=items.map(m=>`<div class="hist-item"><b>${esc(m.title)}</b><div class="hist-meta">${fmtDate(m.date)}</div><p style="font-size:12px;color:var(--muted)">${esc(m.content.slice(0,280))}</p><div class="hist-actions"><button class="btn btn-danger" data-mdel="${m.id}">Borrar</button></div></div>`).join('');
-  box.querySelectorAll('[data-mdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta memoria?'))return;app.memories=app.memories.filter(x=>x.id!==b.dataset.mdel);save();renderWsMemory();});
+  document.querySelectorAll('[data-mdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta memoria?'))return;app.memories=app.memories.filter(x=>x.id!==b.dataset.mdel);save();renderWsMemory();});
 }
 function renderHomeRecent(){
   const recent=app.history.slice(-3).reverse();
   const sec=document.getElementById('homeRecentSection');
   const box=document.getElementById('homeRecent');
-  if(!recent.length){sec.style.display='none';return;}
-  sec.style.display='block';
+  if(!recent.length){if(sec)sec.style.display='none';return;}
+  if(sec)sec.style.display='block';
   box.innerHTML=recent.map(it=>`<div class="hist-item"><b>${esc(it.profileName)} · ${esc(it.topic)}</b><div class="hist-meta">${fmtDate(it.date)}</div></div>`).join('');
 }
 function renderSettings(){
@@ -520,134 +624,116 @@ function saveSettings(){
   app.key=document.getElementById('apiKey').value.trim();
   app.model=document.getElementById('modelSel').value;
   app.theme=document.getElementById('themeSel').value;
-  applyTheme(app.theme);
-  save();
-  syncThemeSelect();
-  toast('Ajustes guardados');
+  applyTheme(app.theme); save(); syncThemeSelect(); toast('Ajustes guardados');
 }
 
-// ==================== NUEVA FUNCIÓN PARA RESUMEN AUTOMÁTICO ====================
-function extractSummary(blocks, maxLength = 180) {
-  // Encuentra el bloque más largo o el primero con contenido sustancial
-  let bestBlock = blocks.find(b => b.content.length > 40) || blocks[0];
-  if (!bestBlock) return "Contenido generado.";
-  let summary = bestBlock.content.substring(0, maxLength);
-  if (bestBlock.content.length > maxLength) summary += "...";
-  return summary;
-}
-
-// ==================== PARSEO Y RENDER (con potencial) ====================
+// ==================== PARSEO Y RENDER ====================
 function parseOutput(txt){
-  let potential = null;
-  const potentialMatch = txt.match(/POTENCIAL:\s*(\d{1,3})/i);
-  if(potentialMatch){
-    potential = parseInt(potentialMatch[1],10);
-    txt = txt.replace(/POTENCIAL:\s*\d{1,3}\s*\n?/i,'');
-  }
-  const parts = txt.split(/===\s*TIPO:/i).filter(Boolean);
-  if(parts.length<2) return { blocks:[{type:'Resultado', content:txt.trim()}], potential };
-  const blocks = parts.map(p=>{
-    const lines = p.trim().split('\n');
-    const type = lines.shift().replace(/===/g,'').trim();
-    const content = lines.join('\n').trim();
-    return {type, content};
-  });
-  return {blocks, potential};
+  let potential=null;
+  const match=txt.match(/POTENCIAL:\s*(\d{1,3})/i);
+  if(match){potential=parseInt(match[1],10); txt=txt.replace(/POTENCIAL:\s*\d{1,3}\s*\n?/i,'');}
+  const parts=txt.split(/===\s*TIPO:/i).filter(Boolean);
+  if(parts.length<2) return {blocks:[{type:'Resultado',content:txt.trim()}], potential};
+  const blocks=parts.map(p=>{const lines=p.trim().split('\n');const type=lines.shift().replace(/===/g,'').trim();const content=lines.join('\n').trim();return{type,content}});
+  return{blocks,potential};
 }
-function renderResult(blocks, potential){
-  let potentialHtml = '';
-  if(potential !== null && !isNaN(potential)){
-    let color = '#ff4d4d';
-    if(potential>=70) color='#4caf50';
-    else if(potential>=40) color='#ffc107';
-    potentialHtml = `<div style="text-align:center; margin:16px 0 8px;"><div style="display:inline-block; background:rgba(0,0,0,0.5); border-radius:20px; padding:8px 16px;"><span style="font-size:12px; color:var(--muted);">🎯 Impacto estimado</span><br><span style="font-size:32px; font-weight:800; color:${color};">${potential}%</span><div style="width:100%; height:6px; background:#333; border-radius:3px; margin-top:6px;"><div style="width:${potential}%; height:6px; background:${color}; border-radius:3px;"></div></div><span style="font-size:10px; color:var(--muted);">Basado en originalidad, claridad, engagement y coherencia</span></div></div>`;
+function renderResult(blocks,potential){
+  let potHtml='';
+  if(potential!==null && !isNaN(potential)){
+    let color='#ff4d4d'; if(potential>=70)color='#4caf50'; else if(potential>=40)color='#ffc107';
+    potHtml=`<div style="text-align:center;margin:16px 0 8px"><div style="display:inline-block;background:rgba(0,0,0,0.5);border-radius:20px;padding:8px 16px"><span style="font-size:12px;color:var(--muted)">🎯 Impacto estimado</span><br><span style="font-size:32px;font-weight:800;color:${color}">${potential}%</span><div style="width:100%;height:6px;background:#333;border-radius:3px;margin-top:6px"><div style="width:${potential}%;height:6px;background:${color};border-radius:3px"></div></div><span style="font-size:10px;color:var(--muted)">Basado en originalidad, claridad, engagement y coherencia</span></div></div>`;
   }
-  const blocksHtml = blocks.map(b=>`<div class="out-block"><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('');
-  document.getElementById('wCards').innerHTML = potentialHtml + blocksHtml;
+  const blocksHtml=blocks.map(b=>`<div class="out-block"><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('');
+  document.getElementById('wCards').innerHTML=potHtml+blocksHtml;
   document.getElementById('wResult').style.display='block';
 }
 
 // ==================== SUGERENCIAS ====================
 function suggestLocalTopic(){
-  const idx = Math.floor(Math.random() * LOCAL_TOPICS.length);
-  document.getElementById('wTopic').value = LOCAL_TOPICS[idx];
+  const idx=Math.floor(Math.random()*LOCAL_TOPICS.length);
+  document.getElementById('wTopic').value=LOCAL_TOPICS[idx];
   toast('Tema local sugerido');
 }
 function showIaWarning(cb){
-  if(iaWarningAccepted){ cb(); return; }
-  const modal = document.getElementById('iaWarningModal');
+  if(iaWarningAccepted){cb();return;}
+  const modal=document.getElementById('iaWarningModal');
   modal.classList.add('show');
-  const confirmBtn = document.getElementById('iaConfirmBtn'), cancelBtn = document.getElementById('iaCancelBtn'), dontAsk = document.getElementById('iaDontAskAgain');
-  const handlerConfirm = () => { if(dontAsk.checked) iaWarningAccepted = true; modal.classList.remove('show'); cb(); clean(); };
-  const handlerCancel = () => { modal.classList.remove('show'); clean(); };
-  const clean = () => { confirmBtn.removeEventListener('click',handlerConfirm); cancelBtn.removeEventListener('click',handlerCancel); };
-  confirmBtn.addEventListener('click',handlerConfirm);
-  cancelBtn.addEventListener('click',handlerCancel);
+  const confirmBtn=document.getElementById('iaConfirmBtn'), cancelBtn=document.getElementById('iaCancelBtn'), dontAsk=document.getElementById('iaDontAskAgain');
+  const handler=()=>{if(dontAsk.checked) iaWarningAccepted=true; modal.classList.remove('show'); cb(); clean();};
+  const cancel=()=>{modal.classList.remove('show'); clean();};
+  const clean=()=>{confirmBtn.removeEventListener('click',handler); cancelBtn.removeEventListener('click',cancel);};
+  confirmBtn.addEventListener('click',handler);
+  cancelBtn.addEventListener('click',cancel);
 }
 async function suggestIATopic(){
-  const p = cp(); if(!p) return toast('Primero abre un perfil');
+  const p=cp(); if(!p) return toast('Primero abre un perfil');
   if(!app.key) return toast('Configura tu API Key en Ajustes');
-  showIaWarning(async () => {
-    const btn = document.getElementById('suggestIABtn');
-    const orig = btn.innerHTML;
-    btn.innerHTML = '<span class="loader-mini"></span> IA...';
-    btn.disabled = true;
-    try {
-      const prompt = `Eres un estratega de contenido creativo. Genera 3 ideas de tema para publicaciones en redes sociales, basadas en el siguiente perfil. Cada idea debe ser una frase clara y completa de al menos 6 palabras, que invite a desarrollar contenido. No uses números ni guiones. Ejemplo: "Cómo mejorar la sensibilidad del mouse para ganar más partidas".
+  showIaWarning(async()=>{
+    const btn=document.getElementById('suggestIABtn');
+    const orig=btn.innerHTML;
+    btn.innerHTML='<span class="loader-mini"></span> IA...'; btn.disabled=true;
+    try{
+      let prompt=`Eres un estratega de contenido creativo. Genera 3 ideas de tema para publicaciones en redes sociales, basadas en el siguiente perfil. Cada idea debe ser una frase clara y completa de al menos 6 palabras, que invite a desarrollar contenido. No uses números ni guiones. Ejemplo: "Cómo mejorar la sensibilidad del mouse para ganar más partidas".
 
 Perfil:
 - Nicho: ${p.niche || 'General'}
 - Audiencia: ${p.audience || 'General'}
 - Tono base: ${p.tone || 'Natural'}
 - Descripción: ${p.description || ''}
+- Palabras clave: ${p.keywords || ''}
+- Objetivo: ${p.goal || ''}
+- Evitar temas: ${p.avoid || ''}
 
 Ahora escribe 3 ideas:`;
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.9, maxOutputTokens:200}})
-      });
+      const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.9,maxOutputTokens:200}})});
       if(!res.ok) throw new Error('Error');
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      const data=await res.json();
+      const text=data.candidates?.[0]?.content?.parts?.[0]?.text;
       if(!text) throw new Error('Sin respuesta');
-      let lines = text.split('\n').filter(l=>l.trim().length>5);
-      if(lines.length===0) lines = [text.trim()];
-      const idea = lines[Math.floor(Math.random()*lines.length)].replace(/^[\d\-•*]+\.?\s*/,'').trim();
-      if(idea.length>5){
-        document.getElementById('wTopic').value = idea;
-        toast('Sugerencia IA aplicada');
-      } else throw new Error('Idea corta');
+      let lines=text.split('\n').filter(l=>l.trim().length>5);
+      if(lines.length===0) lines=[text.trim()];
+      const idea=lines[Math.floor(Math.random()*lines.length)].replace(/^[\d\-•*]+\.?\s*/,'').trim();
+      if(idea.length>5) document.getElementById('wTopic').value=idea;
+      else throw new Error('Idea corta');
+      toast('Sugerencia IA aplicada');
     } catch(e){ toast('Error IA: '+e.message); suggestLocalTopic(); }
-    finally { btn.innerHTML = orig; btn.disabled = false; }
+    finally{ btn.innerHTML=orig; btn.disabled=false; }
   });
 }
 
-// ==================== GENERAR CON PROMPT REFINADO Y MEMORIA AUTOMÁTICA ====================
+// ==================== GENERAR ====================
+function extractSummary(blocks,maxLen=180){
+  let best=blocks.find(b=>b.content.length>40)||blocks[0];
+  if(!best) return "Contenido generado.";
+  let sum=best.content.substring(0,maxLen);
+  if(best.content.length>maxLen) sum+="...";
+  return sum;
+}
 async function generate(){
   if(isGenerating){ toast('Ya hay una generación en curso'); return; }
   const p=cp(); if(!p) return toast('Sin perfil activo');
   const topic=document.getElementById('wTopic').value.trim();
   if(!topic) return toast('Escribe un tema');
   if(!app.key) return toast('Configura tu API Key en Ajustes');
-  const types=getChips('wTypes');
-  if(!types.length) return toast('Elige al menos un tipo');
+  const types=getChips('wTypes'); if(!types.length) return toast('Elige al menos un tipo');
+  const mainPlatform=document.getElementById('mainPlatform').value;
+  const guide=platformGuide[mainPlatform]||'';
+  const secondary=getChips('wPlatforms');
+  const platformsText=secondary.length?`Además, se publicará también en: ${secondary.join(', ')}.`:'';
+  const tone=document.getElementById('wTone').value;
+  const context=document.getElementById('wContext').value.trim();
+  const memMode=document.getElementById('wMemMode').value;
+  lastGenParams={topic,tone,mainPlatform,secondary,types,context,memMode};
+  const mems=app.memories.filter(m=>m.profileId===p.id);
+  const memText=memMode==='none'?'':memMode==='last3'?mems.slice(-3).map(m=>`- ${m.title}: ${m.content}`).join('\n'):mems.map(m=>`- ${m.title}: ${m.content}`).join('\n');
   
-  const mainPlatform = document.getElementById('mainPlatform').value;
-  const guide = platformGuide[mainPlatform] || '';
-  const secondaryPlatforms = getChips('wPlatforms');
-  const platformsText = secondaryPlatforms.length ? `Además, se publicará también en: ${secondaryPlatforms.join(', ')}.` : '';
+  const perfilExtra = [];
+  if(p.keywords) perfilExtra.push(`- Palabras clave: ${p.keywords}`);
+  if(p.goal) perfilExtra.push(`- Objetivo principal: ${p.goal}`);
+  if(p.avoid) perfilExtra.push(`- Temas a evitar: ${p.avoid}`);
+  const perfilExtraStr = perfilExtra.length ? `\n${perfilExtra.join('\n')}` : '';
   
-  const tone = document.getElementById('wTone').value;
-  const context = document.getElementById('wContext').value.trim();
-  const memMode = document.getElementById('wMemMode').value;
-  
-  lastGenParams = { topic, tone, mainPlatform, secondaryPlatforms, types, context, memMode };
-  
-  const mems = app.memories.filter(m=>m.profileId===p.id);
-  const memText = memMode==='none'?'':memMode==='last3'?mems.slice(-3).map(m=>`- ${m.title}: ${m.content}`).join('\n'):mems.map(m=>`- ${m.title}: ${m.content}`).join('\n');
-  
-  // PROMPT REFINADO con criterios claros para el potencial
-  const prompt = `Eres un estratega senior de redes sociales. Responde siempre en español.
+  const prompt=`Eres un estratega senior de redes sociales. Responde siempre en español.
 
 PERFIL
 - Nombre: ${p.name}
@@ -655,7 +741,7 @@ PERFIL
 - Audiencia: ${p.audience||'General'}
 - Tono base: ${p.tone||'Natural'}
 - Descripción: ${p.description||''}
-- CTA: ${p.cta||''}
+- CTA: ${p.cta||''}${perfilExtraStr}
 
 MEMORIA${memText?'\n'+memText:'\n- Sin memoria previa'}
 
@@ -678,90 +764,57 @@ Al final, calcula un Puntaje de Impacto (0-100) basado en estos criterios:
 - Coherencia con el perfil y la plataforma (0-20)
 
 Escribe solo el número en una línea que comience con "POTENCIAL: "`;
-
-  loader(true);
-  isGenerating = true;
-  const genBtn = document.getElementById('wGenBtn');
-  genBtn.disabled = true;
-  genBtn.innerHTML = '<span class="loader-mini"></span> Generando...';
-  const controller = new AbortController();
-  const timeoutId = setTimeout(()=>controller.abort(),60000);
+  loader(true); isGenerating=true;
+  const genBtn=document.getElementById('wGenBtn'); genBtn.disabled=true; genBtn.innerHTML='<span class="loader-mini"></span> Generando...';
+  const controller=new AbortController(); const timeoutId=setTimeout(()=>controller.abort(),60000);
   try{
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:.85, maxOutputTokens:8192}}),
-      signal:controller.signal
-    });
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${app.model}:generateContent?key=${app.key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:8192}}),signal:controller.signal});
     clearTimeout(timeoutId);
     if(!res.ok){
       let errMsg=`HTTP ${res.status}`;
-      try{ const errData=await res.json(); errMsg=errData.error?.message||errMsg; }catch(e){}
-      if(errMsg.includes('quota')) errMsg = '⏳ Límite gratuito excedido. Espera 1 minuto.';
+      try{const errData=await res.json(); errMsg=errData.error?.message||errMsg;}catch(e){}
+      if(errMsg.includes('quota')) errMsg='⏳ Límite gratuito excedido. Espera 1 minuto.';
       throw new Error(errMsg);
     }
-    const data = await res.json();
+    const data=await res.json();
     if(!data.candidates||!data.candidates[0]?.content?.parts?.[0]?.text) throw new Error('Respuesta vacía');
-    const txt = data.candidates[0].content.parts[0].text;
-    lastDraftRaw = txt;
-    const { blocks, potential } = parseOutput(txt);
-    renderResult(blocks, potential);
-    
-    // Guardar en historial
-    const draft = { id:uid(), profileId:p.id, profileName:p.name, date:new Date().toISOString(), topic, tone, mainPlatform, secondaryPlatforms, types, context, blocks, raw:txt, score:potential };
+    const txt=data.candidates[0].content.parts[0].text;
+    lastDraftRaw=txt;
+    const {blocks,potential}=parseOutput(txt);
+    renderResult(blocks,potential);
+    const draft={id:uid(),profileId:p.id,profileName:p.name,date:new Date().toISOString(),topic,tone,mainPlatform,secondaryPlatforms:secondary,types,context,blocks,raw:txt,score:potential};
     app.history.push(draft);
-    
-    // MEMORIA AUTOMÁTICA MEJORADA (reemplaza la anterior)
-    const summary = extractSummary(blocks, 180);
-    const autoMemoryTitle = `📌 ${topic.substring(0, 40)}`;
-    const autoMemoryContent = `[${mainPlatform}] ${summary}`;
-    app.memories.push({ id:uid(), profileId:p.id, title: autoMemoryTitle, content: autoMemoryContent, date: new Date().toISOString(), auto: true });
-    
-    // Limitar memorias automáticas a 20 por perfil
-    const autoMemories = app.memories.filter(m => m.profileId === p.id && m.auto === true);
-    if (autoMemories.length > 20) {
-      const toRemove = autoMemories.slice(0, autoMemories.length - 20);
-      app.memories = app.memories.filter(m => !toRemove.includes(m));
-    }
-    
-    // Control global de memorias (máximo 30 en total por perfil)
-    let allProfileMemories = app.memories.filter(m => m.profileId === p.id);
-    if (allProfileMemories.length > 30) {
-      const toRemove = allProfileMemories.slice(0, allProfileMemories.length - 30);
-      app.memories = app.memories.filter(m => !toRemove.includes(m));
-    }
-    
+    const summary=extractSummary(blocks,180);
+    app.memories.push({id:uid(),profileId:p.id,title:`📌 ${topic.substring(0,40)}`,content:`[${mainPlatform}] ${summary}`,date:new Date().toISOString(),auto:true});
+    let autoMem=app.memories.filter(m=>m.profileId===p.id && m.auto===true);
+    if(autoMem.length>20){ const toRemove=autoMem.slice(0,autoMem.length-20); app.memories=app.memories.filter(m=>!toRemove.includes(m)); }
+    let allMem=app.memories.filter(m=>m.profileId===p.id);
+    if(allMem.length>30){ const toRemove=allMem.slice(0,allMem.length-30); app.memories=app.memories.filter(m=>!toRemove.includes(m)); }
     save();
-    toast('✅ Generado y guardado (memoria automática actualizada)');
+    toast('✅ Generado y guardado');
   } catch(e){
     if(e.name==='AbortError') toast('⏰ Tiempo agotado');
     else toast('❌ Error: '+e.message);
   } finally {
-    loader(false);
-    isGenerating = false;
-    genBtn.disabled = false;
-    genBtn.innerHTML = '⚡ Generar';
+    loader(false); isGenerating=false; genBtn.disabled=false; genBtn.innerHTML='⚡ Generar';
   }
 }
-
-// ==================== REGENERAR ====================
 function regenerate(){
   if(!lastGenParams){ toast('No hay generación previa'); return; }
-  document.getElementById('wTopic').value = lastGenParams.topic;
-  document.getElementById('wTone').value = lastGenParams.tone;
-  document.getElementById('mainPlatform').value = lastGenParams.mainPlatform || 'TikTok';
-  document.getElementById('wContext').value = lastGenParams.context||'';
-  document.getElementById('wMemMode').value = lastGenParams.memMode||'last3';
-  mkChips('wPlatforms', PLATFORMS, lastGenParams.secondaryPlatforms || []);
-  mkChips('wTypes', TYPES, lastGenParams.types);
+  document.getElementById('wTopic').value=lastGenParams.topic;
+  document.getElementById('wTone').value=lastGenParams.tone;
+  document.getElementById('mainPlatform').value=lastGenParams.mainPlatform||'TikTok';
+  document.getElementById('wContext').value=lastGenParams.context||'';
+  document.getElementById('wMemMode').value=lastGenParams.memMode||'last3';
+  mkChips('wPlatforms',PLATFORMS,lastGenParams.secondaryPlatforms||[]);
+  mkChips('wTypes',TYPES,lastGenParams.types);
   generate();
 }
 
 // ==================== SERVICE WORKER ====================
 function registerSW(){
   if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/MXNDO.github-io/sw.js')
-      .then(reg=>console.log('SW registrado',reg))
-      .catch(err=>console.warn('Error SW',err));
+    navigator.serviceWorker.register('/MXNDO.github-io/sw.js').then(reg=>console.log('SW registrado',reg)).catch(err=>console.warn('Error SW',err));
   }
 }
 
@@ -770,16 +823,16 @@ function init(){
   load();
   applyTheme(app.theme||'neon');
   syncThemeSelect();
-  const lastId = sessionStorage.getItem('lastProfileId');
+  const lastId=sessionStorage.getItem('lastProfileId');
   if(lastId && app.profiles.some(p=>p.id===lastId)){
     openWorkspace(lastId);
-    navStack = ['s-home','s-profiles','s-workspace'];
+    navStack=['s-home','s-profiles','s-workspace'];
   } else {
-    navStack = ['s-home'];
+    navStack=['s-home'];
     history.replaceState({screen:'s-home'},'');
   }
   document.querySelectorAll('.bn').forEach(b=>b.onclick=()=>{
-    const id = b.dataset.screen;
+    const id=b.dataset.screen;
     showScreen(id);
     if(id==='s-profiles') renderProfiles();
     if(id==='s-home') renderHomeRecent();
@@ -788,13 +841,14 @@ function init(){
   document.getElementById('modeBtn').onclick=toggleMode;
   document.getElementById('cycleBtn').onclick=cycleTheme;
   document.getElementById('homeGoProfilesBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('homeTourBtn').onclick=()=>alert('Tour:\n1. Crea un perfil.\n2. Selecciona plataforma principal.\n3. Genera contenido optimizado.\n4. El historial guarda el potencial y la memoria automática registra resúmenes.');
+  document.getElementById('homeTourBtn').onclick=()=>alert('Tour:\n1. Crea un perfil (usa el botón Optimizar con IA para rellenar automáticamente).\n2. Selecciona plataforma principal y tipos de contenido.\n3. Genera contenido optimizado.\n4. Historial con puntaje y orden.');
   document.getElementById('newProfileBtn').onclick=openNewProfile;
   document.getElementById('saveProfileBtn').onclick=saveProfile;
   document.getElementById('cancelProfileBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('backFromFormBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('backFromWsBtn').onclick=()=>showScreen('s-profiles');
   document.getElementById('wsEditProfileBtn').onclick=()=>{if(currentProfileId) editProfile(currentProfileId);};
+  document.getElementById('optimizeProfileBtn').onclick=optimizeProfileWithAI;
   document.querySelectorAll('.ws-tab-btn').forEach(b=>b.onclick=()=>switchWsTab(b.dataset.tab));
   document.getElementById('wGenBtn').onclick=generate;
   document.getElementById('wClearBtn').onclick=()=>{
@@ -814,13 +868,15 @@ function init(){
     const title=document.getElementById('memTitle').value.trim();
     const content=document.getElementById('memContent').value.trim();
     if(!title||!content) return toast('Escribe título y contenido');
-    app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString(), auto:false});
+    app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString(),auto:false});
     document.getElementById('memTitle').value='';
     document.getElementById('memContent').value='';
     save(); renderWsMemory(); toast('Memoria guardada');
   };
   document.getElementById('saveSettingsBtn').onclick=saveSettings;
   document.getElementById('themeSel').onchange=()=>{ app.theme=document.getElementById('themeSel').value; applyTheme(app.theme); save(); };
+  const sortSel=document.getElementById('historySortSelect');
+  if(sortSel) sortSel.onchange=()=>renderWsHistory();
   mkChips('wPlatforms',PLATFORMS,['TikTok']);
   mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);
   renderProfiles();
