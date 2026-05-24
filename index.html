@@ -8,9 +8,10 @@
 <meta name="apple-mobile-web-app-title" content="NeonAI">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<title>NEON CREATOR AI - Potencial IA</title>
+<title>NEON CREATOR AI - Potencial refinado y memoria automática</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
+/* ========== MISMO CSS QUE EN EL PASO 2 (no cambios) ========== */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#05030d;--bg2:#09051a;--panel:#110a24;
@@ -200,6 +201,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     <button class="btn btn-soft ws-tab-btn" data-tab="wt-memory">🧠 Memoria</button>
   </div>
 
+  <!-- TAB: Generar -->
   <div class="ws-tab active" id="wt-gen">
     <div class="fg"><label>Tema o idea central *</label>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
@@ -218,7 +220,21 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
         <option>Provocador e impactante</option>
       </select>
     </div>
-    <div class="fg"><label>Plataformas</label><div class="chips" id="wPlatforms"></div></div>
+
+    <div class="fg">
+      <label>Plataforma principal</label>
+      <select id="mainPlatform">
+        <option value="TikTok">TikTok</option>
+        <option value="YouTube">YouTube</option>
+        <option value="Instagram Reels">Instagram Reels</option>
+        <option value="Shorts">YouTube Shorts</option>
+        <option value="Twitter/X">Twitter/X</option>
+        <option value="Facebook">Facebook</option>
+        <option value="LinkedIn">LinkedIn</option>
+      </select>
+    </div>
+
+    <div class="fg"><label>Plataformas secundarias</label><div class="chips" id="wPlatforms"></div></div>
     <div class="fg"><label>¿Qué generar?</label><div class="chips" id="wTypes"></div></div>
     <div class="fg"><label>Contexto adicional (opcional)</label><textarea id="wContext" placeholder="Detalles extra, palabras clave, cosas a evitar..."></textarea></div>
     <div class="fg"><label>Uso de memoria</label>
@@ -244,11 +260,13 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
     </div>
   </div>
 
+  <!-- TAB: Historial -->
   <div class="ws-tab" id="wt-history" style="display:none">
     <div class="sec-title">Historial del perfil</div>
     <div id="wsHistoryList"></div>
   </div>
 
+  <!-- TAB: Memoria -->
   <div class="ws-tab" id="wt-memory" style="display:none">
     <div class="sec-title">Memoria del perfil</div>
     <div class="fg"><label>Agregar nota de memoria</label><input id="memTitle" placeholder="Título de la nota"/></div>
@@ -290,7 +308,7 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
   </div>
   <div class="divider"></div>
   <div class="sec-title">Acerca de</div>
-  <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v1.5<br>Generador de contenido por perfil con IA Gemini.<br>Cada perfil tiene su propio generador, historial y memoria.</p>
+  <p style="font-size:12px;color:var(--muted);line-height:1.7">Neon Creator AI v1.6<br>Generador de contenido con IA Gemini.<br>Cada perfil tiene su propio generador, historial y memoria.</p>
 </div>
 </div>
 
@@ -313,11 +331,23 @@ label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:
 
 <script>
 // ==================== CONSTANTES ====================
-const KEY='neon_ai_v5';
+const KEY='neon_ai_v6';
 const THEMES=['neon','ice','violet','amber','cyberRed','green','pink','dark','light'];
 const PLATFORMS=['TikTok','YouTube','Reels','Shorts','Twitter/X','Facebook'];
 const TYPES=['Guión completo','Ganchos (hooks)','Títulos optimizados','Ideas de contenido','Descripción y hashtags','CTA'];
 
+// GUÍA DE PLATAFORMAS
+const platformGuide = {
+  'TikTok': 'Para TikTok: genera un guion para video vertical de 15-30 segundos. Hook potente en los primeros 2 segundos. Texto en pantalla dinámico. Usa tendencias de sonido o efectos virales. Hashtags: 3-5 relevantes.',
+  'YouTube': 'Para YouTube: genera un guion para video horizontal de 5-10 minutos. Estructura: intro gancho (0:00-0:30), desarrollo con 3 puntos clave, ejemplos prácticos, conclusión y CTA (suscribirse/comentar). Título sugerido al inicio.',
+  'Instagram Reels': 'Para Instagram Reels: video vertical rápido (<60s). Hook visual/textual. Edición ágil. Música trending. Texto superpuesto. Hashtags: 3-5 + marca.',
+  'Shorts': 'Para YouTube Shorts: video vertical de 15-60s. Ritmo rápido, loop visual. Título llamativo en primeros segundos. Hashtags: #Shorts + nicho.',
+  'Twitter/X': 'Para Twitter/X: genera un hilo de 2-4 tweets. Primer tweet impactante (menos de 280 caracteres). Usa bullet points. Incluye 1-2 hashtags y una pregunta para engagement.',
+  'Facebook': 'Para Facebook: texto más extenso (500-1000 caracteres). Formato: título llamativo, párrafo introductorio, 3 viñetas, llamado a la acción. Puede incluir imagen sugerida.',
+  'LinkedIn': 'Para LinkedIn: contenido profesional, tono formal pero cercano. Estructura: gancho con pregunta o dato, desarrollo con consejos prácticos, cierre con reflexión y CTA (compartir opinión). Hashtags: 2-3 del sector.'
+};
+
+// LISTA LOCAL DE TEMAS
 const LOCAL_TOPICS = [
   "5 errores que cometen los principiantes y cómo evitarlos",
   "Herramientas gratuitas que todo creador debería conocer",
@@ -369,9 +399,9 @@ let navStack=[];
 let isGenerating=false;
 let iaWarningAccepted=false;
 
-// ==================== AUXILIARES ====================
+// ==================== FUNCIONES AUXILIARES ====================
 function save(){localStorage.setItem(KEY,JSON.stringify(app))}
-function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)}}catch(e){}}
+function load(){try{const r=localStorage.getItem(KEY);if(r)app={...app,...JSON.parse(r)};if(!app.model)app.model='gemini-2.5-flash'}catch(e){}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function esc(s=''){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
 function fmtDate(d){const t=(Date.now()-new Date(d))/1e3;if(t<60)return'ahora';if(t<3600)return Math.floor(t/60)+'m';if(t<86400)return Math.floor(t/3600)+'h';return new Date(d).toLocaleDateString('es-MX',{day:'numeric',month:'short'})}
@@ -437,59 +467,104 @@ function delProfile(id){if(!confirm(`¿Borrar el perfil "${app.profiles.find(p=>
 function openWorkspace(id){currentProfileId=id;sessionStorage.setItem('lastProfileId',id);loadWorkspaceHeader();switchWsTab('wt-gen');mkChips('wPlatforms',PLATFORMS,['TikTok']);mkChips('wTypes',TYPES,['Guión completo','Ideas de contenido']);document.getElementById('wTopic').value='';document.getElementById('wContext').value='';document.getElementById('wResult').style.display='none';showScreen('s-workspace');}
 function loadWorkspaceHeader(){const p=cp();if(!p)return;document.getElementById('wsAvatar').textContent=initials(p.name);document.getElementById('wsName').textContent=p.name;document.getElementById('wsNiche').textContent=p.niche||'Sin nicho';document.getElementById('wTone').value=p.tone||'Energético y motivador';}
 function switchWsTab(tabId){document.querySelectorAll('.ws-tab').forEach(t=>t.style.display='none');document.getElementById(tabId).style.display='block';document.querySelectorAll('.ws-tab-btn').forEach(b=>{const on=b.dataset.tab===tabId;b.className='btn '+(on?'btn-primary':'btn-soft')+' ws-tab-btn';});if(tabId==='wt-history')renderWsHistory();if(tabId==='wt-memory')renderWsMemory();}
-function renderWsHistory(){const p=cp();if(!p)return;const items=app.history.filter(h=>h.profileId===p.id).slice().reverse();const box=document.getElementById('wsHistoryList');if(!items.length){box.innerHTML='<div class="empty"><b>Sin historial</b><p>Genera contenido para verlo aquí.</p></div>';return;}box.innerHTML=items.map(it=>`<div class="hist-item"><b>${esc(it.topic)}</b><div class="hist-meta"><span class="tag">${esc(it.tone||'-')}</span><span>${fmtDate(it.date)}</span><span>${esc((it.platforms||[]).join(', '))}</span></div><div class="hist-body" id="hb-${it.id}">${(it.blocks||[]).map(b=>`<div><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('')}</div><div class="hist-actions"><button class="btn btn-soft" data-view="${it.id}">Ver</button><button class="btn btn-soft" data-use="${it.id}">Usar</button><button class="btn btn-soft" data-edit="${it.id}">Editar tema</button><button class="btn btn-danger" data-hdel="${it.id}">Borrar</button></div></div>`).join('');}
-function renderWsMemory(){const p=cp();if(!p)return;const items=app.memories.filter(m=>m.profileId===p.id).slice().reverse();const box=document.getElementById('wsMemoryList');if(!items.length){box.innerHTML='<div class="empty"><b>Sin memoria</b><p>Agrega notas o se crean automáticamente al generar.</p></div>';return;}box.innerHTML=items.map(m=>`<div class="hist-item"><b>${esc(m.title)}</b><div class="hist-meta">${fmtDate(m.date)}</div><p style="font-size:12px;color:var(--muted)">${esc(m.content.slice(0,280))}</p><div class="hist-actions"><button class="btn btn-danger" data-mdel="${m.id}">Borrar</button></div></div>`).join('');}
-function renderHomeRecent(){const recent=app.history.slice(-3).reverse();const sec=document.getElementById('homeRecentSection');if(!recent.length){sec.style.display='none';return;}sec.style.display='block';document.getElementById('homeRecent').innerHTML=recent.map(it=>`<div class="hist-item"><b>${esc(it.profileName)} · ${esc(it.topic)}</b><div class="hist-meta">${fmtDate(it.date)}</div></div>`).join('');}
-function renderSettings(){document.getElementById('apiKey').value=app.key||'';document.getElementById('modelSel').value=app.model;document.getElementById('themeSel').value=app.theme;}
-function saveSettings(){app.key=document.getElementById('apiKey').value.trim();app.model=document.getElementById('modelSel').value;app.theme=document.getElementById('themeSel').value;applyTheme(app.theme);save();syncThemeSelect();toast('Ajustes guardados');}
 
-// ==================== PARSEO DE RESPUESTA CON POTENCIAL ====================
+// ==================== HISTORIAL Y MEMORIA ====================
+function renderWsHistory(){
+  const p=cp(); if(!p) return;
+  const box=document.getElementById('wsHistoryList');
+  const items=app.history.filter(h=>h.profileId===p.id).slice().reverse();
+  if(!items.length){box.innerHTML='<div class="empty"><b>Sin historial</b><p>Genera contenido para verlo aquí.</p></div>';return;}
+  box.innerHTML=items.map(it=>`
+    <div class="hist-item" id="hi-${it.id}">
+      <b>${esc(it.topic)}</b>
+      <div class="hist-meta">
+        <span class="tag">${esc(it.tone||'-')}</span>
+        <span>${fmtDate(it.date)}</span>
+        <span>${esc((it.secondaryPlatforms||[]).join(', '))}</span>
+      </div>
+      <div class="hist-body" id="hb-${it.id}">${(it.blocks||[]).map(b=>`<div><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('')}</div>
+      <div class="hist-actions">
+        <button class="btn btn-soft" data-view="${it.id}">Ver</button>
+        <button class="btn btn-soft" data-use="${it.id}">Usar</button>
+        <button class="btn btn-soft" data-edit="${it.id}">Editar tema</button>
+        <button class="btn btn-danger" data-hdel="${it.id}">Borrar</button>
+      </div>
+    </div>`).join('');
+  box.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const id=b.dataset.view;const el=document.getElementById('hb-'+id);el.classList.toggle('open');b.textContent=el.classList.contains('open')?'Ocultar':'Ver';});
+  box.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.use);if(!it)return;document.getElementById('wTopic').value=it.topic||'';document.getElementById('wContext').value=it.context||'';document.getElementById('wTone').value=it.tone||'Energético y motivador';document.getElementById('mainPlatform').value=it.mainPlatform||'TikTok';mkChips('wPlatforms',PLATFORMS,it.secondaryPlatforms||[]);mkChips('wTypes',TYPES,it.types||[]);switchWsTab('wt-gen');toast('Cargado al generador');});
+  box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const it=app.history.find(x=>x.id===b.dataset.edit);if(!it)return;const t=prompt('Editar tema:',it.topic||'');if(t===null)return;it.topic=t.trim()||it.topic;save();renderWsHistory();});
+  box.querySelectorAll('[data-hdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta generación?'))return;app.history=app.history.filter(x=>x.id!==b.dataset.hdel);save();renderWsHistory();});
+}
+function renderWsMemory(){
+  const p=cp(); if(!p) return;
+  const box=document.getElementById('wsMemoryList');
+  const items=app.memories.filter(m=>m.profileId===p.id).slice().reverse();
+  if(!items.length){box.innerHTML='<div class="empty"><b>Sin memoria</b><p>Agrega notas o se crean automáticamente al generar.</p></div>';return;}
+  box.innerHTML=items.map(m=>`<div class="hist-item"><b>${esc(m.title)}</b><div class="hist-meta">${fmtDate(m.date)}</div><p style="font-size:12px;color:var(--muted)">${esc(m.content.slice(0,280))}</p><div class="hist-actions"><button class="btn btn-danger" data-mdel="${m.id}">Borrar</button></div></div>`).join('');
+  box.querySelectorAll('[data-mdel]').forEach(b=>b.onclick=()=>{if(!confirm('¿Borrar esta memoria?'))return;app.memories=app.memories.filter(x=>x.id!==b.dataset.mdel);save();renderWsMemory();});
+}
+function renderHomeRecent(){
+  const recent=app.history.slice(-3).reverse();
+  const sec=document.getElementById('homeRecentSection');
+  const box=document.getElementById('homeRecent');
+  if(!recent.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  box.innerHTML=recent.map(it=>`<div class="hist-item"><b>${esc(it.profileName)} · ${esc(it.topic)}</b><div class="hist-meta">${fmtDate(it.date)}</div></div>`).join('');
+}
+function renderSettings(){
+  document.getElementById('apiKey').value=app.key||'';
+  document.getElementById('modelSel').value=app.model;
+  document.getElementById('themeSel').value=app.theme;
+}
+function saveSettings(){
+  app.key=document.getElementById('apiKey').value.trim();
+  app.model=document.getElementById('modelSel').value;
+  app.theme=document.getElementById('themeSel').value;
+  applyTheme(app.theme);
+  save();
+  syncThemeSelect();
+  toast('Ajustes guardados');
+}
+
+// ==================== NUEVA FUNCIÓN PARA RESUMEN AUTOMÁTICO ====================
+function extractSummary(blocks, maxLength = 180) {
+  // Encuentra el bloque más largo o el primero con contenido sustancial
+  let bestBlock = blocks.find(b => b.content.length > 40) || blocks[0];
+  if (!bestBlock) return "Contenido generado.";
+  let summary = bestBlock.content.substring(0, maxLength);
+  if (bestBlock.content.length > maxLength) summary += "...";
+  return summary;
+}
+
+// ==================== PARSEO Y RENDER (con potencial) ====================
 function parseOutput(txt){
   let potential = null;
   const potentialMatch = txt.match(/POTENCIAL:\s*(\d{1,3})/i);
-  if (potentialMatch){
-    potential = parseInt(potentialMatch[1], 10);
-    txt = txt.replace(/POTENCIAL:\s*\d{1,3}\s*\n?/i, '');
+  if(potentialMatch){
+    potential = parseInt(potentialMatch[1],10);
+    txt = txt.replace(/POTENCIAL:\s*\d{1,3}\s*\n?/i,'');
   }
   const parts = txt.split(/===\s*TIPO:/i).filter(Boolean);
-  if (parts.length < 2) return { blocks: [{ type: 'Resultado', content: txt.trim() }], potential };
-  const blocks = parts.map(p => {
+  if(parts.length<2) return { blocks:[{type:'Resultado', content:txt.trim()}], potential };
+  const blocks = parts.map(p=>{
     const lines = p.trim().split('\n');
-    const type = lines.shift().replace(/===/g, '').trim();
+    const type = lines.shift().replace(/===/g,'').trim();
     const content = lines.join('\n').trim();
-    return { type, content };
+    return {type, content};
   });
-  return { blocks, potential };
+  return {blocks, potential};
 }
-
-// ==================== RENDER CON BARRA DE POTENCIAL ====================
 function renderResult(blocks, potential){
   let potentialHtml = '';
-  if (potential !== null && !isNaN(potential)){
+  if(potential !== null && !isNaN(potential)){
     let color = '#ff4d4d';
-    if (potential >= 70) color = '#4caf50';
-    else if (potential >= 40) color = '#ffc107';
-    potentialHtml = `
-      <div class="potential-container" style="text-align:center; margin:16px 0 8px;">
-        <div style="display:inline-block; background:rgba(0,0,0,0.5); border-radius:20px; padding:8px 16px;">
-          <span style="font-size:12px; color:var(--muted);">🎯 Impacto estimado</span><br>
-          <span style="font-size:32px; font-weight:800; color:${color};">${potential}%</span>
-          <div style="width:100%; height:6px; background:#333; border-radius:3px; margin-top:6px;">
-            <div style="width:${potential}%; height:6px; background:${color}; border-radius:3px;"></div>
-          </div>
-          <span style="font-size:10px; color:var(--muted);">Basado en originalidad, claridad y engagement esperado</span>
-        </div>
-      </div>
-    `;
+    if(potential>=70) color='#4caf50';
+    else if(potential>=40) color='#ffc107';
+    potentialHtml = `<div style="text-align:center; margin:16px 0 8px;"><div style="display:inline-block; background:rgba(0,0,0,0.5); border-radius:20px; padding:8px 16px;"><span style="font-size:12px; color:var(--muted);">🎯 Impacto estimado</span><br><span style="font-size:32px; font-weight:800; color:${color};">${potential}%</span><div style="width:100%; height:6px; background:#333; border-radius:3px; margin-top:6px;"><div style="width:${potential}%; height:6px; background:${color}; border-radius:3px;"></div></div><span style="font-size:10px; color:var(--muted);">Basado en originalidad, claridad, engagement y coherencia</span></div></div>`;
   }
-  const blocksHtml = blocks.map(b => `
-    <div class="out-block">
-      <div class="out-type">${esc(b.type)}</div>
-      <div class="out-text">${esc(b.content)}</div>
-    </div>
-  `).join('');
+  const blocksHtml = blocks.map(b=>`<div class="out-block"><div class="out-type">${esc(b.type)}</div><div class="out-text">${esc(b.content)}</div></div>`).join('');
   document.getElementById('wCards').innerHTML = potentialHtml + blocksHtml;
-  document.getElementById('wResult').style.display = 'block';
+  document.getElementById('wResult').style.display='block';
 }
 
 // ==================== SUGERENCIAS ====================
@@ -499,7 +574,7 @@ function suggestLocalTopic(){
   toast('Tema local sugerido');
 }
 function showIaWarning(cb){
-  if(iaWarningAccepted){cb();return;}
+  if(iaWarningAccepted){ cb(); return; }
   const modal = document.getElementById('iaWarningModal');
   modal.classList.add('show');
   const confirmBtn = document.getElementById('iaConfirmBtn'), cancelBtn = document.getElementById('iaCancelBtn'), dontAsk = document.getElementById('iaDontAskAgain');
@@ -547,7 +622,7 @@ Ahora escribe 3 ideas:`;
   });
 }
 
-// ==================== GENERAR (con potencial) ====================
+// ==================== GENERAR CON PROMPT REFINADO Y MEMORIA AUTOMÁTICA ====================
 async function generate(){
   if(isGenerating){ toast('Ya hay una generación en curso'); return; }
   const p=cp(); if(!p) return toast('Sin perfil activo');
@@ -556,13 +631,22 @@ async function generate(){
   if(!app.key) return toast('Configura tu API Key en Ajustes');
   const types=getChips('wTypes');
   if(!types.length) return toast('Elige al menos un tipo');
-  const platforms=getChips('wPlatforms');
-  const tone=document.getElementById('wTone').value;
-  const context=document.getElementById('wContext').value.trim();
-  const memMode=document.getElementById('wMemMode').value;
-  lastGenParams = { topic, tone, platforms, types, context, memMode };
-  const mems=app.memories.filter(m=>m.profileId===p.id);
-  const memText=memMode==='none'?'':memMode==='last3'?mems.slice(-3).map(m=>`- ${m.title}: ${m.content}`).join('\n'):mems.map(m=>`- ${m.title}: ${m.content}`).join('\n');
+  
+  const mainPlatform = document.getElementById('mainPlatform').value;
+  const guide = platformGuide[mainPlatform] || '';
+  const secondaryPlatforms = getChips('wPlatforms');
+  const platformsText = secondaryPlatforms.length ? `Además, se publicará también en: ${secondaryPlatforms.join(', ')}.` : '';
+  
+  const tone = document.getElementById('wTone').value;
+  const context = document.getElementById('wContext').value.trim();
+  const memMode = document.getElementById('wMemMode').value;
+  
+  lastGenParams = { topic, tone, mainPlatform, secondaryPlatforms, types, context, memMode };
+  
+  const mems = app.memories.filter(m=>m.profileId===p.id);
+  const memText = memMode==='none'?'':memMode==='last3'?mems.slice(-3).map(m=>`- ${m.title}: ${m.content}`).join('\n'):mems.map(m=>`- ${m.title}: ${m.content}`).join('\n');
+  
+  // PROMPT REFINADO con criterios claros para el potencial
   const prompt = `Eres un estratega senior de redes sociales. Responde siempre en español.
 
 PERFIL
@@ -578,18 +662,28 @@ MEMORIA${memText?'\n'+memText:'\n- Sin memoria previa'}
 TAREA
 - Tema: ${topic}
 - Tono: ${tone}
-- Plataformas: ${platforms.join(', ')}
-- Tipos de contenido: ${types.join(', ')}
+- Plataforma principal: ${mainPlatform}. ${guide}
+- ${platformsText}
+- Tipos de contenido a generar: ${types.join(', ')}
 - Contexto extra: ${context||'Ninguno'}
 
 Devuelve cada sección con formato:
 === TIPO: [nombre] ===
 [contenido]
 
-Al final agrega: POTENCIAL: [número del 1 al 100]`;
-  loader(true); isGenerating=true;
+Al final, calcula un Puntaje de Impacto (0-100) basado en estos criterios:
+- Originalidad del enfoque (0-30)
+- Claridad y estructura del mensaje (0-25)
+- Potencial de engagement (compartidos, comentarios) (0-25)
+- Coherencia con el perfil y la plataforma (0-20)
+
+Escribe solo el número en una línea que comience con "POTENCIAL: "`;
+
+  loader(true);
+  isGenerating = true;
   const genBtn = document.getElementById('wGenBtn');
-  genBtn.disabled=true; genBtn.innerHTML='<span class="loader-mini"></span> Generando...';
+  genBtn.disabled = true;
+  genBtn.innerHTML = '<span class="loader-mini"></span> Generando...';
   const controller = new AbortController();
   const timeoutId = setTimeout(()=>controller.abort(),60000);
   try{
@@ -611,32 +705,58 @@ Al final agrega: POTENCIAL: [número del 1 al 100]`;
     lastDraftRaw = txt;
     const { blocks, potential } = parseOutput(txt);
     renderResult(blocks, potential);
-    const draft = { id:uid(), profileId:p.id, profileName:p.name, date:new Date().toISOString(), topic, tone, platforms, types, context, blocks, raw:txt, score:potential };
+    
+    // Guardar en historial
+    const draft = { id:uid(), profileId:p.id, profileName:p.name, date:new Date().toISOString(), topic, tone, mainPlatform, secondaryPlatforms, types, context, blocks, raw:txt, score:potential };
     app.history.push(draft);
-    app.memories.push({ id:uid(), profileId:p.id, title:'Generado: '+topic, content:blocks.map(b=>b.type+': '+b.content.slice(0,200)).join(' | '), date:new Date().toISOString() });
-    let perProfile = app.memories.filter(m=>m.profileId===p.id);
-    if(perProfile.length>30){ const toRemove=perProfile.slice(0,perProfile.length-30); app.memories=app.memories.filter(m=>!toRemove.includes(m)); }
+    
+    // MEMORIA AUTOMÁTICA MEJORADA (reemplaza la anterior)
+    const summary = extractSummary(blocks, 180);
+    const autoMemoryTitle = `📌 ${topic.substring(0, 40)}`;
+    const autoMemoryContent = `[${mainPlatform}] ${summary}`;
+    app.memories.push({ id:uid(), profileId:p.id, title: autoMemoryTitle, content: autoMemoryContent, date: new Date().toISOString(), auto: true });
+    
+    // Limitar memorias automáticas a 20 por perfil
+    const autoMemories = app.memories.filter(m => m.profileId === p.id && m.auto === true);
+    if (autoMemories.length > 20) {
+      const toRemove = autoMemories.slice(0, autoMemories.length - 20);
+      app.memories = app.memories.filter(m => !toRemove.includes(m));
+    }
+    
+    // Control global de memorias (máximo 30 en total por perfil)
+    let allProfileMemories = app.memories.filter(m => m.profileId === p.id);
+    if (allProfileMemories.length > 30) {
+      const toRemove = allProfileMemories.slice(0, allProfileMemories.length - 30);
+      app.memories = app.memories.filter(m => !toRemove.includes(m));
+    }
+    
     save();
-    toast('✅ Generado y guardado');
+    toast('✅ Generado y guardado (memoria automática actualizada)');
   } catch(e){
     if(e.name==='AbortError') toast('⏰ Tiempo agotado');
     else toast('❌ Error: '+e.message);
   } finally {
-    loader(false); isGenerating=false; genBtn.disabled=false; genBtn.innerHTML='⚡ Generar';
+    loader(false);
+    isGenerating = false;
+    genBtn.disabled = false;
+    genBtn.innerHTML = '⚡ Generar';
   }
 }
 
+// ==================== REGENERAR ====================
 function regenerate(){
   if(!lastGenParams){ toast('No hay generación previa'); return; }
   document.getElementById('wTopic').value = lastGenParams.topic;
   document.getElementById('wTone').value = lastGenParams.tone;
+  document.getElementById('mainPlatform').value = lastGenParams.mainPlatform || 'TikTok';
   document.getElementById('wContext').value = lastGenParams.context||'';
   document.getElementById('wMemMode').value = lastGenParams.memMode||'last3';
-  mkChips('wPlatforms', PLATFORMS, lastGenParams.platforms);
+  mkChips('wPlatforms', PLATFORMS, lastGenParams.secondaryPlatforms || []);
   mkChips('wTypes', TYPES, lastGenParams.types);
   generate();
 }
 
+// ==================== SERVICE WORKER ====================
 function registerSW(){
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('/MXNDO.github-io/sw.js')
@@ -668,7 +788,7 @@ function init(){
   document.getElementById('modeBtn').onclick=toggleMode;
   document.getElementById('cycleBtn').onclick=cycleTheme;
   document.getElementById('homeGoProfilesBtn').onclick=()=>showScreen('s-profiles');
-  document.getElementById('homeTourBtn').onclick=()=>alert('Tour:\n1. Crea un perfil.\n2. Ábrelo y genera contenido.\n3. Revisa historial y memoria.');
+  document.getElementById('homeTourBtn').onclick=()=>alert('Tour:\n1. Crea un perfil.\n2. Selecciona plataforma principal.\n3. Genera contenido optimizado.\n4. El historial guarda el potencial y la memoria automática registra resúmenes.');
   document.getElementById('newProfileBtn').onclick=openNewProfile;
   document.getElementById('saveProfileBtn').onclick=saveProfile;
   document.getElementById('cancelProfileBtn').onclick=()=>showScreen('s-profiles');
@@ -694,7 +814,7 @@ function init(){
     const title=document.getElementById('memTitle').value.trim();
     const content=document.getElementById('memContent').value.trim();
     if(!title||!content) return toast('Escribe título y contenido');
-    app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString()});
+    app.memories.push({id:uid(),profileId:p.id,title,content,date:new Date().toISOString(), auto:false});
     document.getElementById('memTitle').value='';
     document.getElementById('memContent').value='';
     save(); renderWsMemory(); toast('Memoria guardada');
